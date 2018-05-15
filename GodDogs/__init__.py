@@ -1,6 +1,7 @@
-from flask import Flask, url_for, redirect, session
+from flask import Flask, url_for, redirect, session, request, render_template
 from utils import login
 import sqlite3
+
 
 app = Flask(__name__)
 
