@@ -1,4 +1,4 @@
-# Snapchat but with Dogs
+# Dogechat
 ## Team: GodDogs
 ### Team Members: Jonathan Quang, Daniel Chernovolenko, Kyle Lin, Adrian Boylan
 #### What are we trying to accomplish?
