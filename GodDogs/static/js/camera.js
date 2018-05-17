@@ -51,14 +51,14 @@ function gotStream(stream) {
 		if (video) stop();
 	};
 	stream.onended = noStream;
-	if (window.webkitURL) video.src = window.webkitURL.createObjectURL(stream);
+	if (window.URL) video.srcObject = stream;
 	else if (video.mozSrcObject !== undefined) { //FF18a
 		video.mozSrcObject = stream;
 		video.play();
 	} else if (navigator.mozGetUserMedia) { //FF16a, 17a
 		video.src = stream;
 		video.play();
-	} else if (window.URL) video.src = window.URL.createObjectURL(stream);
+	} else if (window.URL) video.srcObject =  stream;
 	else video.src = stream;
 	myButton = document.getElementById('buttonSnap');
 	if (myButton) myButton.disabled = false;
