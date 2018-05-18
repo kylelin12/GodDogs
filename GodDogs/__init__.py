@@ -10,13 +10,6 @@ def index():
     if request.method == "POST":
         redirect(url_for("index"))
     
-    return render_template('index.html')
-
-@app.route('/index2', methods=["GET", "POST"])
-def index2():
-    if request.method == "POST":
-        redirect(url_for("index2"))
-
     return render_template('index2.html')
 
 @app.route('/about')

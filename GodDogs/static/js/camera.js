@@ -1,94 +1,41 @@
-"use strict";
+// Grab elements, create settings, etc.
 var video = document.getElementById('video');
+
+// Get access to the camera!
+if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+	// Not adding `{ audio: true }` since we only want video now
+	navigator.mediaDevices.getUserMedia({
+		video: true
+	}).then(function (stream) {
+		video.src = window.URL.createObjectURL(stream);
+		video.play();
+	});
+}
+
+// Elements for taking the snapshot
 var canvas = document.getElementById('canvas');
-var videoStream = null;
-var preLog = document.getElementById('preLog');
+var context = canvas.getContext('2d');
+var video = document.getElementById('video');
 
-function log(text) {
-	if (preLog) preLog.textContent += ('\n' + text);
-	else alert(text);
-}
+// Trigger photo take
+document.getElementById("snap").addEventListener("click", function () {
+	context.drawImage(video, 0, 0, 640, 480);
+});
 
-function snapshot() {
-	canvas.width = video.videoWidth;
-	canvas.height = video.videoHeight;
-	canvas.getContext('2d').drawImage(video, 0, 0);
-}
+var filterB = document.getElementById('filterB');
 
-function noStream() {
-	log('Access to camera was denied!');
-}
+filters = {0: 'brightness(2.0)', 1: "blur(5px)", 2: "contract(200%)", 3: "grayscale(100%)", 4: "hue-rotate(90deg)", 5: "drop-shadow(16px 16px 20px red) invert(75%)", 6: ""};
+filterCounter = 0;
 
-function stop() {
-	var myButton = document.getElementById('buttonStop');
-	if (myButton) myButton.disabled = true;
-	myButton = document.getElementById('buttonSnap');
-	if (myButton) myButton.disabled = true;
-	if (videoStream) {
-		if (videoStream.stop) videoStream.stop();
-		else if (videoStream.msStop) videoStream.msStop();
-		videoStream.onended = null;
-		videoStream = null;
-	}
-	if (video) {
-		video.onerror = null;
-		video.pause();
-		if (video.mozSrcObject)
-			video.mozSrcObject = null;
-		video.src = "";
-	}
-	myButton = document.getElementById('buttonStart');
-	if (myButton) myButton.disabled = false;
-}
+var filterCounterUp = function() {
+	if (filterCounter == 6) filterCounter = 0;
+	else filterCounter = filterCounter + 1;
+};
 
-function gotStream(stream) {
-	var myButton = document.getElementById('buttonStart');
-	if (myButton) myButton.disabled = true;
-	videoStream = stream;
-	log('Got stream.');
-	video.onerror = function () {
-		log('video.onerror');
-		if (video) stop();
-	};
-	stream.onended = noStream;
-	if (window.URL) video.srcObject = stream;
-	else if (video.mozSrcObject !== undefined) { //FF18a
-		video.mozSrcObject = stream;
-		video.play();
-	} else if (navigator.mozGetUserMedia) { //FF16a, 17a
-		video.src = stream;
-		video.play();
-	} else if (window.URL) video.srcObject =  stream;
-	else video.src = stream;
-	myButton = document.getElementById('buttonSnap');
-	if (myButton) myButton.disabled = false;
-	myButton = document.getElementById('buttonStop');
-	if (myButton) myButton.disabled = false;
-}
+var filter = function() {
+	console.log(filterCounter);
+	canvas.style.filter = filters[filterCounter];
+	filterCounterUp();
+};
 
-function start() {
-	if ((typeof window === 'undefined') || (typeof navigator === 'undefined')) log('This page needs a Web browser with the objects window.* and navigator.*!');
-	else if (!(video && canvas)) log('HTML context error!');
-	else {
-		log('Get user media…');
-		if (navigator.getUserMedia) navigator.getUserMedia({
-			video: true
-		}, gotStream, noStream);
-		else if (navigator.oGetUserMedia) navigator.oGetUserMedia({
-			video: true
-		}, gotStream, noStream);
-		else if (navigator.mozGetUserMedia) navigator.mozGetUserMedia({
-			video: true
-		}, gotStream, noStream);
-		else if (navigator.webkitGetUserMedia) navigator.webkitGetUserMedia({
-			video: true
-		}, gotStream, noStream);
-		else if (navigator.msGetUserMedia) navigator.msGetUserMedia({
-			video: true,
-			audio: false
-		}, gotStream, noStream);
-		else log('getUserMedia() not available from your Web browser!');
-	}
-}
-
-start();
+filterB.addEventListener('click', filter);
