@@ -1,9 +1,30 @@
 <!DOCTYPE html>
-<html>
-    <head>
+<html lang="en">
 
-    </head>
-    <body>
-        
-    </body>
+<head>
+	<meta charset="utf-8">
+
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='bs/css/bootstrap.min.css')}}">
+</head>
+
+<body>
+	<p>
+		<video id="video" autoplay="autoplay"></video>
+	</p>
+	<p>
+		<input type="button" class="btn btn-primary" id="buttonSnap" value="Take screenshot" disabled="disabled" onclick="snapshot()" />
+	</p>
+	<p>
+		<input type="button" class="btn btn-primary" id="buttonStart" value="Start" disabled="disabled" onclick="start()" />
+		<input type="button" class="btn btn-primary" id="buttonStop" value="Stop" disabled="disabled" onclick="stop()" />
+	</p>
+	<p>
+		<canvas id="canvas"></canvas>
+	</p>
+	<script type="text/javascript" src="{{url_for('static', filename='bs/js/jquery-3.2.1.slim.min.js')}}"></script>
+	<script type="text/javascript" src="{{url_for('static', filename='bs/js/popper.min.js')}}"></script>
+	<script type="text/javascript" src="{{url_for('static', filename='bs/js/bootstrap.min.js')}}"></script>
+	<script type="text/javascript" src="{{url_for('static', filename='js/camera.js')}}"></script>
+</body>
+
 </html>

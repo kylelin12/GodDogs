@@ -1,6 +1,7 @@
-from flask import Flask, url_for, redirect, session
+from flask import Flask, url_for, redirect, session, request, render_template
 from utils import login
 import sqlite3
+
 
 app = Flask(__name__)
 
@@ -10,6 +11,13 @@ def index():
         redirect(url_for("index"))
     
     return render_template('index.html')
+
+@app.route('/index2', methods=["GET", "POST"])
+def index2():
+    if request.method == "POST":
+        redirect(url_for("index2"))
+
+    return render_template('index2.html')
 
 @app.route('/about')
 def about():
