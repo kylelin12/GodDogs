@@ -1,4 +1,4 @@
-http://167.99.154.223
+http://159.65.235.50/
 
 # Dogechat
 ## Team: GodDogs
