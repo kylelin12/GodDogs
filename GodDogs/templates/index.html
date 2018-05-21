@@ -3,50 +3,14 @@
 {% block title %}Dogechat{% endblock %}
 
 {% block body %}
-  <!-- Modal-->
-  <div id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade">
-    <div role="document" class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 id="exampleModalLabel" class="modal-title">Sign Up Modal</h5>
-          <button type="button" data-dismiss="modal" aria-label="Close" class="close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form id="signupform" action="#">
-            <div class="form-group">
-              <label for="fullname">Full Name</label>
-              <input type="text" name="fullname" placeholder="Full Name" id="fullname">
-            </div>
-            <div class="form-group">
-              <label for="username">User Name</label>
-              <input type="text" name="username" placeholder="User Name" id="username">
-            </div>
-            <div class="form-group">
-              <label for="email">Email Address</label>
-              <input type="text" name="email" placeholder="Email Address" id="email">
-            </div>
-            <div class="form-group">
-              <button type="submit" class="submit btn btn-primary btn-shadow btn-gradient">Signup</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+<div class="row d-flex">
+  <div>
+    <video id="video" width="640" height="480" autoplay></video>
+    <button id="snap">Snap Photo</button>
+    <button id="filterB">FILTER</button>
+    <canvas id="canvas" width="640" height="480"></canvas>
   </div>
-  <section id="hero" class="hero hero-home bg-gray">
-    <div class="container">
-      <div class="row d-flex">
-        <div>
-          <video id="video" width="640" height="480" autoplay></video>
-          <button id="snap">Snap Photo</button>
-          <button id="filterB">FILTER</button>
-          <canvas id="canvas" width="640" height="480"></canvas>
-        </div>
-      </div>
-    </div>
-  </section>
+</div>
 {% endblock %}
 
 {% block jscripts %}
