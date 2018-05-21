@@ -14,7 +14,7 @@ def index():
 
 @app.route('/profile', methods=["GET", "POST"])
 def about():
-    return render_template('profile.html', "DANIEL")
+    return render_template('profile.html', name="DANIEL")
 
 if __name__ == '__main__':
     app.debug = True
