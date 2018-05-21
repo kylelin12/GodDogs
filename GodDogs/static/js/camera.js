@@ -43,5 +43,5 @@ filterB.addEventListener('click', filter);
 var convertCanvasToBase64 = function(){
 	var image = new Image();
 	image.src = canvas.toDataURL("image/jpeg");
-	return image.src.substr(23);
+	return image.src
 }
