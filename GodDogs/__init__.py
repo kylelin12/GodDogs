@@ -10,11 +10,11 @@ def index():
     if request.method == "POST":
         redirect(url_for("index"))
     
-    return render_template('index2.html')
+    return render_template('index.html')
 
-@app.route('/about')
+@app.route('/profile', methods=["GET", "POST"])
 def about():
-    return render_template('about.html')
+    return render_template('profile.html', "DANIEL")
 
 if __name__ == '__main__':
     app.debug = True
