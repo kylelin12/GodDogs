@@ -47,6 +47,7 @@ def register():
     return render_template('register.html')
 
 @app.route('/logout', methods=['GET', 'POST'])
+def logout():
     # Delete session cookie etc.
     return redirect(url_for('index'))
 

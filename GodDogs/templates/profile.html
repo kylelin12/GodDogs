@@ -16,7 +16,7 @@
             </div>
             <div class="row user-detail">
                 <div class="col-lg-12 col-sm-12 col-12">
-                    <img src="https://i.imgur.com/S9acS9n.gif" class="rounded-circle img-thumbnail">
+                    <img id="profile-img" class="rounded-circle img-thumbnail">
                     <h5>Danny Phantom</h5>
                     <hr>
                     <!-- IF FRIENDED THEN SHOW UNFRIEND ELSE SHOW FRIEND BUTTON -->
@@ -83,4 +83,8 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block jscripts %}
+<script src="{{url_for('static', filename='js/dog.js')}}"></script>
 {% endblock %}
