@@ -13,3 +13,6 @@ idk
 linKyle -- 2018-05-21 13:39:09
 jinja2 templates
 
+quangJ -- 2018-05-22 13:53:39
+picture data sent to backend with ajax
+
