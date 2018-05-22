@@ -49,3 +49,9 @@ var convertCanvasToBase64 = function(){
 	image.src = canvas.toDataURL("image/jpeg");
 	return image.src
 }
+
+var sendPicData = function(){
+	$.ajax({url:'/storePicData',
+		data:convertCanvasToBase64(),
+		method:"POST"});
+}
