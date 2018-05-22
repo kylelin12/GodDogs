@@ -16,3 +16,6 @@ jinja2 templates
 quangJ -- 2018-05-22 13:53:39
 picture data sent to backend with ajax
 
+quangJ -- 2018-05-22 14:04:37
+Remove depracated code and added profilePicData column to users table
+
