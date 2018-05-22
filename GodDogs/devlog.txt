@@ -4,3 +4,6 @@ Git out of here landy
 linKyle -- 2018-05-22 10:15:10
 Added routes for most things. Added fancy buttons to profile page and added examples + placeholders for each page.
 
+linKyle -- 2018-05-22 10:56:32
+Login and register page added. No functionality yet
+

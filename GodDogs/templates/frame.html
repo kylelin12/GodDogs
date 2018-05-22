@@ -48,21 +48,23 @@
             <li class="nav-item">
               <a class="nav-link" href="{{url_for('friendslist')}}">Friends</a>
             </li>
-            {% if true %}
-            <li class="nav-item">
-                <a class="btn btn-success btn-md" href="#">
-                    <i class="fas fa-door-closed"></i>
-                    Login
-                </a>
-            </li>
-            {% else %}
-            <li class="nav-item">
-                <a class="btn btn-danger btn-md" href="#">
-                    <i class="fas fa-door-open"></i>
-                    Logout
-                </a>
-            </li>
-            {% endif %}
+            {% block showlog %}
+                {% if true %}
+                <li class="nav-item">
+                    <a class="btn btn-success btn-md" href="{{url_for('login')}}">
+                        <i class="fas fa-door-closed"></i>
+                        Login
+                    </a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="btn btn-danger btn-md" href="{{url_for('logout')}}">
+                        <i class="fas fa-door-open"></i>
+                        Logout
+                    </a>
+                </li>
+                {% endif %}
+            {% endblock %}
           </ul>
         </div>
       </div>

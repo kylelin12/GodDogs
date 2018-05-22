@@ -2,7 +2,6 @@ from flask import Flask, url_for, redirect, session, request, render_template
 from utils import login
 import sqlite3
 
-
 app = Flask(__name__)
 
 # Index page
@@ -34,6 +33,22 @@ def friendslist():
     if request.method == 'POST':
         redirect(url_for('friendslist'))
     return render_template('friendslist.html', name='DANIEL')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        redirect(url_for('login'))
+    return render_template('login.html')
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        redirect(url_for('register'))
+    return render_template('register.html')
+
+@app.route('/logout', methods=['GET', 'POST'])
+    # Delete session cookie etc.
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.debug = True

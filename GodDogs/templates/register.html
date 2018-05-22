@@ -1,0 +1,17 @@
+{% extends 'logister.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block regiorno %}Register{% endblock %}
+
+{% block loginorno %}
+<div class="form-group">
+    <label for="key-confirm" class="sr-only">Password</label>
+    <input type="password" name="key-confirm" id="key-confirm" class="form-control" placeholder="Password Confirmation">
+</div>
+<a class="btn btn-success btn-lg btn-block" href="{{url_for('login')}}">
+    <i class="fas fa-door-closed"></i>
+    Back to login page
+</a>
+<input type="submit" id="btn-register" class="btn btn-primary btn-lg btn-block" value="Register">
+{% endblock %}
