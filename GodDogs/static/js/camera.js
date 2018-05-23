@@ -21,10 +21,24 @@ var canvas = document.getElementById('canvas');
 var context = canvas.getContext('2d');
 var video = document.getElementById('video');
 
-// Trigger photo take
-document.getElementById("snap").addEventListener("click", function () {
+$("#canvas").addClass("hidden");
+$("#filterB").prop("disabled", true);
+$("#snapAgain").prop("disabled", true);
+$("#saveB").prop("disabled", true);
+
+// Function to snap
+var snap = function() {
+	$("#canvas").removeClass("hidden");
+	$("#video").addClass("hidden");
 	context.drawImage(video, 0, 0, 640, 480);
-});
+	$(this).prop("disabled", true);
+	$("#snapAgain").prop("disabled", false);
+	$("#filterB").prop("disabled", false);
+	$("#saveB").prop("disabled", false);
+};
+
+// Trigger photo take
+$("#snap").click(snap);
 
 var filterB = document.getElementById('filterB');
 
@@ -43,6 +57,19 @@ var filter = function() {
 };
 
 filterB.addEventListener('click', filter);
+
+// Take another photo
+
+var snapAnother = function() {
+	$("#snap").prop("disabled", false);
+	$("#filterB").prop("disabled", true);
+	$("#saveB").prop("disabled", true);
+	$(this).prop("disabled", true);
+	$("#video").removeClass("hidden");
+	$("#canvas").addClass("hidden");
+};
+
+$("#snapAgain").click(snapAnother);
 
 var convertCanvasToBase64 = function(){
 	var image = new Image();

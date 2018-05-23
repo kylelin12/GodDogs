@@ -1,9 +1,9 @@
 import os, hashlib
 from flask import session
-from utils import database
+import database
 
 # Creates a new user
-def new_user(u,p):
+def new_user(u, p):
     return database.add_user(u, encrypt(p))
 
 # Change password for user
@@ -16,11 +16,11 @@ def encrypt(p):
 
 # Checks password
 def pw_verify(u, p):
-    return encrypt(p) == database.get_pw(u)
+    return encrypt(p) == database.check_pass(u)
 
 # Checks username
 def u_exists(u):
-    return database.get_pw(u) is not None
+    return database.check_pass(u) is not None
 
 # Logged in checker
 def logged_in():

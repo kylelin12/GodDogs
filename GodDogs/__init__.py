@@ -1,12 +1,17 @@
 from flask import Flask, url_for, redirect, session, request, render_template
-#from utils import login
+from utils import auth
 import sqlite3
 
-from os import path
+import os
 
 app = Flask(__name__)
 
-DIR = path.dirname(__file__)
+def make_secret_key():
+    return os.urandom(32)
+
+app.secret_key = make_secret_key()
+
+DIR = os.path.dirname(__file__)
 
 # Index page
 @app.route('/', methods=['GET', 'POST'])
@@ -40,59 +45,59 @@ def friendslist():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        redirect(url_for('login'))
+    print "xd"
+    if request.method == "POST":
+        user = request.form['email']
+        pw = request.form["key"]
+
+        print "[app] user is " + user
+        print "[app] pw is " + pw
+
+        if auth.u_exists(user):
+            if auth.login(user, pw):
+                return redirect('index')
+            else:
+                print "bad pw"
+                # bad pw
+        else:
+            print "bad user"
+            #user doesn't exist
     return render_template('login.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        redirect(url_for('register'))
+        user = request.form['email']
+        pw = request.form["key"]
+
+        print "[app] user is " + user
+        print "[app] pw is " + pw
+
+        pw_ver = request.form['key-confirm']
+        if (pw == pw_ver):
+            if auth.new_user(user, pw):
+                # Successfully created
+                return redirect('login')
+            else:
+                print "user in use"
+                # Registration error username in use
+        else:
+            print "bad pw"
+            # PW do not match
+            
     return render_template('register.html')
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     # Delete session cookie etc.
-    return redirect(url_for('index'))
-
-@app.route('/authenticate', methods=['GET','POST'])
-def authenticate():
-    print "xd"
-    user = request.form.get['email']
-    pw = request.form.get["key"]
-
-    print "[app] user is " + user
-    print "[app] pw is " + pw
-
-    if db.look_for(user):
-        #authenticate pass
-        print "hi"
-        if db.check_pass(user, pw):
-            session['user'] = user
-            return redirect(url_for('root'))
-        else:
-            flash ("Incorrect Password.")
-            return redirect(url_for('login'))
+    if auth.logged_in():
+        auth.logout()
+        print "logged out"
+        # You've been logged out
     else:
-        flash ("User does not exist.")
-        return redirect(url_for('login'))
-
-@app.route('/user_creation', methods=['POST'])
-def user_creation():
-    print "xd"
-    user = request.form['email']
-    pw = request.form['key']
-    pw_confirm = request.form['confirm']
-
-    if db.look_for(user):
-        flash ("User already exists")
-        return redirect(url_for('register'))
-    if pw != pw_confirm:
-        flash ("Passwords must match")
-        return redirect(url_for('register'))
-    db.add_user(user, pw)
-    flash ("Account Created")
-    return redirect(url_for('login'))
+        print "not logged in"
+        # Error not logged in
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.debug = False

@@ -1,24 +1,20 @@
 import sqlite3
 
-# Initiates Cursor
-def init_cursor():
-    f = "GodDog.db"
-    db = sqlite3.connect(f)
-    c = db.cursor()
-    return c
-
 db = sqlite3.connect("GodDog.db")
 c = db.cursor()
 c.execute('CREATE TABLE IF NOT EXISTS users (username TEXT PRIMARY KEY, password TEXT NOT NULL);')
 c.execute('CREATE TABLE IF NOT EXISTS pictures (sender TEXT, receiver TEXT, picture64 TEXT, time INT);')
 c.execute('CREATE TABLE IF NOT EXISTS messages (sender TEXT, receiver TEXT, message TEXT, time INT);')
 c.execute('CREATE TABLE IF NOT EXISTS globalchat (sender TEXT, message TEXT, time INT);')
+db.commit()
 db.close()
 
 # users Database
 
 def add_user(u, p):
-    c = init_cursor()
+    f = "GodDog.db"
+    db = sqlite3.connect(f)
+    c = db.cursor()
     if empty_db():
         c.execute('INSERT INTO users VALUES("%s", "%s");' %(u, p))
         db.commit()
@@ -33,47 +29,31 @@ def add_user(u, p):
     return False
 
 def empty_db():
-    c = init_cursor()
+    f = "'GodDog.db"
+    db = sqlite3.connect(f)
+    c = db.cursor()
     c.execute('SELECT * FROM users;')
     results = c.fetchall()
     return results == []
-
-def look_for(user):
-    db = sqlite3.connect(dbf)
-    c = db.cursor()
-    command = "SELECT username FROM users;"
-    name = c.execute(command)
-    for account in name:
-        for entry in account:
-            print entry
-            print "[db] user is " + entry
-            print "[db] input user is " + user
-            if entry == user:
-                db.commit()
-                db.close()
-                return True
-    db.commit()
-    db.close()
-    return False
     
-def check_pass(u, p):
-    c = init_cursor()
-    check_pw = c.execute('SELECT password FROM users WHERE username="%s";' %(u))
+def check_pass(u):
+    f = "GodDog.db"
+    db = sqlite3.connect(f)
+    c = db.cursor()
+    # print(username)
+    c.execute('SELECT password FROM users WHERE username="%s";' %(u))
     results = c.fetchall()
-    for entry in check_pw:
-        if entry[0] == pw:
-            print entry
-            print "[db] check pw is " + entry[0]
-            print "[db] input pw is " + pw
-            db.commit()
-            db.close()
-            return True
-    db.commit()
-    db.close()
-    return False
+    if results == []:
+        db.close()
+        return None
+    else:
+        db.close()
+    return results[0][0]
 
 def change_pw(u, p):
-    c = init_cursor()
+    f = "'GodDog.db"
+    db = sqlite3.connect(f)
+    c = db.cursor()
     c.execute('UPDATE users SET password="%s" WHERE username="%s";' %(p, u))
     db.commit()
     db.close()
