@@ -1,0 +1,36 @@
+linKyle -- 2018-05-09 13:27:02
+Initial Commit
+
+linKyle -- 2018-05-11 08:08:26
+Initial commits
+
+linKyle -- 2018-05-14 13:41:39
+Reorganized for WSGI
+
+linKyle -- 2018-05-17 13:24:25
+idk
+
+linKyle -- 2018-05-21 13:39:09
+jinja2 templates
+
+linKyle -- 2018-05-21 14:01:17
+Git out of here landy
+
+linKyle -- 2018-05-22 10:15:10
+Added routes for most things. Added fancy buttons to profile page and added examples + placeholders for each page.
+
+linKyle -- 2018-05-22 10:56:32
+Login and register page added. No functionality yet
+
+linKyle -- 2018-05-22 13:23:31
+DOGCEO
+
+quangJ -- 2018-05-22 13:53:39
+picture data sent to backend with ajax
+
+quangJ -- 2018-05-22 14:04:37
+Remove depracated code and added profilePicData column to users table
+
+linKyle -- 2018-05-23 08:11:32
+Reorganized folders
+

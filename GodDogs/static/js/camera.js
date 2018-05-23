@@ -8,7 +8,7 @@ var startCam = function() {
 		navigator.mediaDevices.getUserMedia({
 			video: true
 		}).then(function (stream) {
-			video.src = window.URL.createObjectURL(stream);
+			video.srcObject = stream
 			video.play();
 		});
 	}
@@ -48,4 +48,10 @@ var convertCanvasToBase64 = function(){
 	var image = new Image();
 	image.src = canvas.toDataURL("image/jpeg");
 	return image.src
+}
+
+var sendPicData = function(){
+	$.ajax({url:'/storePicData',
+		data:convertCanvasToBase64(),
+		method:"POST"});
 }
