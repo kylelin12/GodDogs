@@ -2,7 +2,11 @@ from flask import Flask, url_for, redirect, session, request, render_template
 from utils import login
 import sqlite3
 
+from os import path
+
 app = Flask(__name__)
+
+DIR = path.dirname(__file__)
 
 # Index page
 @app.route('/', methods=['GET', 'POST'])
@@ -52,5 +56,5 @@ def logout():
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    app.debug = True
+    app.debug = False
     app.run()
