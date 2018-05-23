@@ -55,6 +55,45 @@ def logout():
     # Delete session cookie etc.
     return redirect(url_for('index'))
 
+@app.route('/authenticate', methods=['GET','POST'])
+def authenticate():
+    print "xd"
+    user = request.form.get['email']
+    pw = request.form.get["key"]
+
+    print "[app] user is " + user
+    print "[app] pw is " + pw
+
+    if db.look_for(user):
+        #authenticate pass
+        print "hi"
+        if db.check_pass(user, pw):
+            session['user'] = user
+            return redirect(url_for('root'))
+        else:
+            flash ("Incorrect Password.")
+            return redirect(url_for('login'))
+    else:
+        flash ("User does not exist.")
+        return redirect(url_for('login'))
+
+@app.route('/user_creation', methods=['POST'])
+def user_creation():
+    print "xd"
+    user = request.form['email']
+    pw = request.form['key']
+    pw_confirm = request.form['confirm']
+
+    if db.look_for(user):
+        flash ("User already exists")
+        return redirect(url_for('register'))
+    if pw != pw_confirm:
+        flash ("Passwords must match")
+        return redirect(url_for('register'))
+    db.add_user(user, pw)
+    flash ("Account Created")
+    return redirect(url_for('login'))
+
 if __name__ == '__main__':
     app.debug = False
     app.run()

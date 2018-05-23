@@ -38,16 +38,40 @@ def empty_db():
     results = c.fetchall()
     return results == []
 
-def get_pw(u):
+def look_for(user):
+    db = sqlite3.connect(dbf)
+    c = db.cursor()
+    command = "SELECT username FROM users;"
+    name = c.execute(command)
+    for account in name:
+        for entry in account:
+            print entry
+            print "[db] user is " + entry
+            print "[db] input user is " + user
+            if entry == user:
+                db.commit()
+                db.close()
+                return True
+    db.commit()
+    db.close()
+    return False
+    
+def check_pass(u, p):
     c = init_cursor()
-    c.execute('SELECT password FROM users WHERE username="%s";' %(u))
+    check_pw = c.execute('SELECT password FROM users WHERE username="%s";' %(u))
     results = c.fetchall()
-    if results == []:
-        db.close()
-        return None
-    else:
-        db.close()
-        return results[0][0]
+    for entry in check_pw:
+        if entry[0] == pw:
+            print entry
+            print "[db] check pw is " + entry[0]
+            print "[db] input pw is " + pw
+            db.commit()
+            db.close()
+            return True
+    db.commit()
+    db.close()
+    return False
+
 def change_pw(u, p):
     c = init_cursor()
     c.execute('UPDATE users SET password="%s" WHERE username="%s";' %(p, u))
