@@ -100,6 +100,12 @@ def logout():
         flash('You can\'t log out if you aren\'t logged in.')
     return redirect(url_for('index'))
 
+@app.route('/storePicData', methods=['POST'])
+def storePicData():
+	print 'xd'
+	print request.json['data']
+	return request.json['data']
+
 if __name__ == '__main__':
-    app.debug = False
+    app.debug = True
     app.run()

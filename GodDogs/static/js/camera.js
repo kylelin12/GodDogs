@@ -29,6 +29,7 @@ $(document).ready(function () {
 		$("#canvas").removeClass("hidden");
 		$("#video").addClass("hidden");
 		$("#canvas")[0].getContext('2d').drawImage(video, 0, 0, 640, 480);
+		resetFilter();
 		$(this).prop("disabled", true);
 		$("#snapAgain").prop("disabled", false);
 		$("#filterB").prop("disabled", false);
@@ -95,14 +96,31 @@ $(document).ready(function () {
 		var image = new Image();
 		image.src = $('#canvas').toDataURL("image/jpeg");
 		return image.src
-	}
+	};
+
+	var sendPicData = function () {
+		$.ajax({
+			url: '{{url_for("storePicData")}}',
+			data: convertCanvasToBase64(),
+			method: "POST"
+		});
+	};
+
+});
+
+
+	var convertCanvasToBase64 = function () {
+		var image = new Image();
+		image.src = document.getElementById("canvas-cpy").toDataURL("image/jpeg");
+		return image.src
+	};
 
 	var sendPicData = function () {
 		$.ajax({
 			url: '/storePicData',
-			data: convertCanvasToBase64(),
+			data: {'data': convertCanvasToBase64()},
 			method: "POST"
 		});
-	}
+	};	
 
-})
+
