@@ -29,7 +29,7 @@ def add_user(u, p):
     return False
 
 def empty_db():
-    f = "'GodDog.db"
+    f = "GodDog.db"
     db = sqlite3.connect(f)
     c = db.cursor()
     c.execute('SELECT * FROM users;')
