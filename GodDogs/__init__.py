@@ -103,8 +103,8 @@ def logout():
 @app.route('/storePicData', methods=['POST'])
 def storePicData():
 	print 'xd'
-	print request.json['data']
-	return request.json['data']
+	print request.form['data']
+	return request.form['data']
 
 if __name__ == '__main__':
     app.debug = True
