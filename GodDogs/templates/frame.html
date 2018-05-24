@@ -38,29 +38,29 @@
               <a class="nav-link" href="{{url_for('index')}}">Home
               </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{url_for('gchat')}}">GChat
-                </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{url_for('profile')}}">Profile</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{url_for('friendslist')}}">Friends</a>
-            </li>
             {% block showlog %}
-                {% if true %}
+                {% if logged_in() %}
                 <li class="nav-item">
-                    <a class="btn btn-success btn-md" href="{{url_for('login')}}">
-                        <i class="fas fa-door-closed"></i>
-                        Login
+                    <a class="nav-link" href="{{url_for('gchat')}}">GChat
                     </a>
                 </li>
-                {% else %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{{url_for('profile')}}">Profile</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{url_for('friendslist')}}">Friends</a>
+                </li>
                 <li class="nav-item">
                     <a class="btn btn-danger btn-md" href="{{url_for('logout')}}">
                         <i class="fas fa-door-open"></i>
                         Logout
+                    </a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="btn btn-success btn-md" href="{{url_for('login')}}">
+                        <i class="fas fa-door-closed"></i>
+                        Login
                     </a>
                 </li>
                 {% endif %}
@@ -69,6 +69,18 @@
         </div>
       </div>
     </nav>
+
+    <div id="flashed_messages">
+        {% for message in get_flashed_messages() %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h4>Holy guacamole!</h4> 
+            <p>{{ message }}</p>
+        </div>
+        {% endfor %}
+    </div>
 
     <!-- Page Content -->
     {% block body %}
