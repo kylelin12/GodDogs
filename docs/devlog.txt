@@ -37,3 +37,6 @@ Reorganized folders
 linKyle -- 2018-05-23 14:51:50
 Login mostly working. Needs more work.
 
+quangJ -- 2018-05-23 23:35:16
+Fixed bug where table doesn't exist when registering
+
