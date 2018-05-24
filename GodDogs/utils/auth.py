@@ -29,7 +29,7 @@ def logged_in():
 # Creates a new session if username and password match
 def login(u, p):
     if(pw_verify(u, p)):
-        session['username'] = username
+        session['username'] = u
         return True
     else:
         return False
