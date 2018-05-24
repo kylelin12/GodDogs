@@ -20,10 +20,10 @@ def add_user(u, p):
         db.commit()
         db.close()
         return True
-    if get_pw(u) is None:
+    if check_pass(u) is None:
         c.execute('INSERT INTO users VALUES("%s", "%s");' %(u, p))
         db.commit()
-        cb.close()
+        db.close()
         return True
     db.close()
     return False
