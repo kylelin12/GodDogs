@@ -119,7 +119,11 @@ $(document).ready(function () {
 		$.ajax({
 			url: '/storePicData',
 			data: {'data': convertCanvasToBase64()},
-			method: "POST"
+			method: "POST",
+			success: function(data){
+				console.log(data);
+				console.log('picture processed');
+			}
 		});
 	};	
 
