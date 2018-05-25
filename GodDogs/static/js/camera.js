@@ -109,22 +109,29 @@ $(document).ready(function () {
 });
 
 
-	var convertCanvasToBase64 = function () {
-		var image = new Image();
-		image.src = document.getElementById("canvas-cpy").toDataURL("image/jpeg");
-		return image.src
-	};
+var convertCanvasToBase64 = function () {
+	var image = new Image();
+	image.src = document.getElementById("canvas-cpy").toDataURL("image/jpeg");
+	return image.src
+};
 
-	var sendPicData = function () {
-		$.ajax({
-			url: '/storePicData',
-			data: {'data': convertCanvasToBase64()},
-			method: "POST",
-			success: function(data){
-				console.log(data);
-				console.log('picture processed');
-			}
-		});
-	};	
+var sendPicData = function (targetUser) {
+	$.ajax({
+		url: '/storePicData',
+		data: {'data': convertCanvasToBase64(),'targetUserDict':targetUser},
+		method: "POST",
+		success: function(data){
+			console.log(data);
+			console.log('picture processed');
+		}
+	});
+};
+
+var composeUserDict = function(){
+	checkboxList = document.getElementById("checkListOfUsers");
+	for (checkMarkDiv in checkboxList.childNodes){
+		console.log(checkMarkDiv);
+	}
+}
 
 
