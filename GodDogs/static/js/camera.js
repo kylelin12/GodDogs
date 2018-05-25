@@ -115,10 +115,10 @@ var convertCanvasToBase64 = function () {
 	return image.src
 };
 
-var sendPicData = function (targetUser) {
+var sendPicData = function () {
 	$.ajax({
 		url: '/storePicData',
-		data: {'data': convertCanvasToBase64(),'targetUserDict':targetUser},
+		data: {'data': convertCanvasToBase64(),'targetUserArray':composeUserDict},
 		method: "POST",
 		success: function(data){
 			console.log(data);
@@ -129,9 +129,16 @@ var sendPicData = function (targetUser) {
 
 var composeUserDict = function(){
 	checkboxList = document.getElementById("checkListOfUsers");
-	for (checkMarkDiv in checkboxList.childNodes){
-		console.log(checkMarkDiv);
+	arr = [];
+	for (var i=0; i < checkboxList.length-1;i+=1){
+		var checkBoxInput = checkboxList[i];
+		if (checkBoxInput.checked == true){
+			arr.push(checkboxList[i].value);
+		}
 	}
-}
+	return arr;
+};
+
+
 
 
