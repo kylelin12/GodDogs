@@ -1,6 +1,7 @@
 from flask import Flask, url_for, redirect, session, request, render_template, flash
-from utils import auth
+from utils import auth,database
 import sqlite3
+import time as time_
 
 import os
 
@@ -106,7 +107,13 @@ def storePicData():
 	#print request.form['data']
 	#print request.form['targetUserArray']
 	print session['username']
+        print request.form['targetUserArray']
+        userList = request.form['targetUserArray'].split(",")
+        for receiver in userList:
+            database.add_picture(session['username'],receiver,request.form['data'],int(round(time_.time()*1000)))
 	return "pics Processed"
+
+
 
 if __name__ == '__main__':
     app.debug = True

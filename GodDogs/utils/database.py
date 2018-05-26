@@ -51,7 +51,7 @@ def check_pass(u):
     return results[0][0]
 
 def change_pw(u, p):
-    f = "'GodDog.db"
+    f = "GodDog.db"
     db = sqlite3.connect(f)
     c = db.cursor()
     c.execute('UPDATE users SET password="%s" WHERE username="%s";' %(p, u))
@@ -63,7 +63,10 @@ def change_pw(u, p):
 
 # Sender - Receiver - Picture64 - Time
 def add_picture(s, r, p, t):
-    c = init_cursor()
+    f = "GodDog.db"
+    db = sqlite3.connect(f)
+    c = db.cursor()
+    #c = init_cursor()
     c.execute('INSERT INTO pictures VALUES("%s", "%s", "%s", "%s");' %(s, r, p, t))
     db.commit()
     db.close()
