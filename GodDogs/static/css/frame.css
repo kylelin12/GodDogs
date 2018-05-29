@@ -11,3 +11,8 @@ body {
 .hidden {
     display: none;
 }
+
+#flashed_messages {
+    left: 50%;
+    margin: 10px auto;
+}

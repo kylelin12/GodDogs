@@ -31,6 +31,7 @@ def gchat():
     if auth.logged_in():
         return render_template('gchat.html')
     else:
+        session['alert-type'] = 'error'
         flash('Please log in before joining the global chat')
         return redirect(url_for('login'))
 
@@ -43,6 +44,7 @@ def profile():
     if auth.logged_in():
         return render_template('profile.html', name='DANIEL')
     else:
+        session['alert-type'] = 'error'
         flash('Please log in before checking your profile')
         return redirect(url_for('login'))
 
@@ -55,6 +57,7 @@ def friendslist():
     if auth.logged_in():
         return render_template('friendslist.html', name=session['username'])
     else:
+        session['alert-type'] = 'error'
         flash('Please log in before checking your friends list')
         return redirect(url_for('login'))
 
@@ -66,10 +69,14 @@ def login():
 
         if auth.u_exists(user):
             if auth.login(user, pw):
+                session['alert-type'] = 'success'
+                flash('Welcome to Dogechat %s!'%(user))
                 return redirect(url_for('index'))
             else:
+                session['alert-type'] = 'error'
                 flash('You entered an incorrect password.')
         else:
+            session['alert-type'] = 'error'
             flash('That email address does not have a registered account.')
     return render_template('login.html')
 
@@ -82,11 +89,14 @@ def register():
         pw_ver = request.form['key-confirm']
         if (pw == pw_ver):
             if auth.new_user(user, pw):
+                session['alert-type'] = 'success'
                 flash('Your account has been successfully created. Please log in.')
                 return redirect(url_for('login'))
             else:
+                session['alert-type'] = 'error'
                 flash('That email is already in use. Please use another one.')
         else:
+            session['alert-type'] = 'error'
             flash('The passwords you entered do not match.')
             
     return render_template('register.html')
@@ -96,8 +106,10 @@ def logout():
     # Delete session cookie etc.
     if auth.logged_in():
         auth.logout()
+        session['alert-type'] = 'notice'
         flash('You have been logged out.')
     else:
+        session['alert-type'] = 'error'
         flash('You can\'t log out if you aren\'t logged in.')
     return redirect(url_for('index'))
 

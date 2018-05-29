@@ -70,16 +70,46 @@
       </div>
     </nav>
 
-    <div id="flashed_messages">
-        {% for message in get_flashed_messages() %}
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <div class="container">
+      <div class="row">
+        <div id="flashed_messages">
+          {% for message in get_flashed_messages() %}
+            {% if session['alert-type'] == 'error' %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
-            </button>
-            <h4>Holy guacamole!</h4> 
-            <p>{{ message }}</p>
+              </button>
+              <h4>Error:</h4>
+              <p>{{ message }}</p>
+            </div>
+            {% elif session['alert-type'] == 'notice' %}
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4>Notice:</h4>
+              <p>{{ message }}</p>
+            </div>
+            {% elif session['alert-type'] == 'success' %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4>Success:</h4>
+              <p>{{ message }}</p>
+            </div>
+            {% else %}
+            <div class="alert alert-dark alert-dismissible fade show" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4>Message:</h4>
+              <p>{{ message }}</p>
+            </div>
+            {% endif %}
+          {% endfor %}
         </div>
-        {% endfor %}
+      </div>
     </div>
 
     <!-- Page Content -->

@@ -12,10 +12,26 @@
             </div>
             <div class="row user-detail">
                 <div class="col-lg-12 col-sm-12 col-12">
-                    placeholder lol
+                    <table class="table">
+                        <thead style="color: gray">
+                            <tr>
+                                <th>Friend</th>
+                                <th>Status</th>
+                                <th>Message</th>
+                                <th>Poke</th>
+                            </tr>
+                        </thead>
+                        <tbody id="friendslist-input">
+                            
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block jscripts %}
+<script type="text/javascript" src="{{url_for('static', filename='js/friendslist.js')}}"></script>
 {% endblock %}

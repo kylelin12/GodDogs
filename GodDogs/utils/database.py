@@ -2,10 +2,11 @@ import sqlite3
 
 db = sqlite3.connect("GodDog.db")
 c = db.cursor()
-c.execute('CREATE TABLE IF NOT EXISTS users (username TEXT PRIMARY KEY, password TEXT NOT NULL);')
-c.execute('CREATE TABLE IF NOT EXISTS pictures (sender TEXT, receiver TEXT, picture64 TEXT, time INT);')
+c.execute('CREATE TABLE IF NOT EXISTS users (username TEXT PRIMARY KEY, password TEXT NOT NULL, avatar BLOB);')
+c.execute('CREATE TABLE IF NOT EXISTS pictures (sender TEXT, receiver TEXT, picture64 BLOB, time INT);')
 c.execute('CREATE TABLE IF NOT EXISTS messages (sender TEXT, receiver TEXT, message TEXT, time INT);')
 c.execute('CREATE TABLE IF NOT EXISTS globalchat (sender TEXT, message TEXT, time INT);')
+c.execute('CREATE TABLE IF NOT EXISTS friendslist (id INT PRIMARY KEY, user1 TEXT NOT NULL, user2 TEXT NOT NULL, status INT NOT NULL)')
 db.commit()
 db.close()
 

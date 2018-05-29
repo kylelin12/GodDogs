@@ -52,3 +52,6 @@ worked on camera data ajax
 quangJ -- 2018-05-26 00:10:48
 finally stored pic data in db
 
+linKyle -- 2018-05-29 12:13:32
+Foundation for friendslist
+
