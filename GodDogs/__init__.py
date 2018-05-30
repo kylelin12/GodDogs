@@ -131,5 +131,7 @@ def messenger():
 
 
 if __name__ == '__main__':
-    app.debug = False
-    app.run()
+	if (sys.argv[1]=="d"):
+		print d
+	app.debug = False
+	app.run()

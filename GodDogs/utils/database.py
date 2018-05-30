@@ -1,6 +1,11 @@
 import sqlite3
 
-db = sqlite3.connect("GodDog.db")
+devPath = "GodDog.db"
+deployPath = "./var/www/GodDogs/GodDogs/GodDog.db"
+
+#db = sqlite3.connect(deployPath)
+
+db = sqlite3.connect(devPath)
 c = db.cursor()
 c.execute('CREATE TABLE IF NOT EXISTS users (username TEXT PRIMARY KEY, password TEXT NOT NULL);')
 c.execute('CREATE TABLE IF NOT EXISTS pictures (sender TEXT, receiver TEXT, picture64 BLOB, time INT);')
