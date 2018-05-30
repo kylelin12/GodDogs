@@ -126,8 +126,6 @@ def storePicData():
             database.add_picture(session['username'],receiver,request.form['data'],int(round(time_.time()*1000)))
 	return "pics Processed"
 
-
-
 if __name__ == '__main__':
     app.debug = False
     app.run()
