@@ -1,8 +1,8 @@
 import sqlite3
 
-db = sqlite3.connect("GodDog.db")
+db = sqlite3.connect("./GodDogs/GodDog.db")
 c = db.cursor()
-c.execute('CREATE TABLE IF NOT EXISTS users (username TEXT PRIMARY KEY, password TEXT NOT NULL, avatar BLOB);')
+c.execute('CREATE TABLE IF NOT EXISTS users (username TEXT PRIMARY KEY, password TEXT NOT NULL);')
 c.execute('CREATE TABLE IF NOT EXISTS pictures (sender TEXT, receiver TEXT, picture64 BLOB, time INT);')
 c.execute('CREATE TABLE IF NOT EXISTS messages (sender TEXT, receiver TEXT, message TEXT, time INT);')
 c.execute('CREATE TABLE IF NOT EXISTS globalchat (sender TEXT, message TEXT, time INT);')
@@ -13,7 +13,7 @@ db.close()
 # users Database
 
 def add_user(u, p):
-    f = "GodDog.db"
+    f = "./GodDogs/GodDog.db"
     db = sqlite3.connect(f)
     c = db.cursor()
     if empty_db():
@@ -30,7 +30,7 @@ def add_user(u, p):
     return False
 
 def empty_db():
-    f = "GodDog.db"
+    f = "./GodDogs/GodDog.db"
     db = sqlite3.connect(f)
     c = db.cursor()
     c.execute('SELECT * FROM users;')
@@ -38,7 +38,7 @@ def empty_db():
     return results == []
     
 def check_pass(u):
-    f = "GodDog.db"
+    f = "./GodDogs/GodDog.db"
     db = sqlite3.connect(f)
     c = db.cursor()
     # print(username)
@@ -52,7 +52,7 @@ def check_pass(u):
     return results[0][0]
 
 def change_pw(u, p):
-    f = "GodDog.db"
+    f = "./GodDogs/GodDog.db"
     db = sqlite3.connect(f)
     c = db.cursor()
     c.execute('UPDATE users SET password="%s" WHERE username="%s";' %(p, u))
@@ -64,7 +64,7 @@ def change_pw(u, p):
 
 # Sender - Receiver - Picture64 - Time
 def add_picture(s, r, p, t):
-    f = "GodDog.db"
+    f = "./GodDogs/GodDog.db"
     db = sqlite3.connect(f)
     c = db.cursor()
     #c = init_cursor()
