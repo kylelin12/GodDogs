@@ -14,7 +14,8 @@ app.secret_key = make_secret_key()
 
 app.jinja_env.globals.update(logged_in = auth.logged_in)
 
-DIR = os.path.dirname(__file__)
+DIR = os.path.dirname(__file__) or ‘.’
+DIR += ‘/’
 
 # Index page
 @app.route('/', methods=['GET', 'POST'])
