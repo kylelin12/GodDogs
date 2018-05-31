@@ -127,7 +127,7 @@ def storePicData():
 
 @app.route("/messenger", methods=['GET','POST'])
 def messenger():
-	return render_template("messenger.html")
+	return render_template("messenger.html",username=session['username'])
 
 
 if __name__ == '__main__':
