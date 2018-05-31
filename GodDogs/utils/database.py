@@ -41,7 +41,7 @@ def empty_db():
     return results == []
     
 def check_pass(u):
-    db = db.file
+    db = sqlite3.connect(db_file)
     c = db.cursor()
     # print(username)
     c.execute('SELECT password FROM users WHERE username="%s";' %(u))
