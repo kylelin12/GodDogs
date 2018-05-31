@@ -3,7 +3,7 @@ import sqlite3
 devPath = "GodDog.db"
 deployPath = "./var/www/GodDogs/GodDogs/GodDog.db"
 
-#db = sqlite3.connect(deployPath)
+#db = sqlite3.connect(devPath)
 
 db = sqlite3.connect(devPath)
 c = db.cursor()
@@ -18,7 +18,7 @@ db.close()
 # users Database
 
 def add_user(u, p):
-    db = sqlite3.connect(deployPath)
+    db = sqlite3.connect(devPath)
     c = db.cursor()
     if empty_db():
         c.execute('INSERT INTO users VALUES("%s", "%s");' %(u, p))
@@ -34,14 +34,14 @@ def add_user(u, p):
     return False
 
 def empty_db():
-    db = sqlite3.connect(deployPath)
+    db = sqlite3.connect(devPath)
     c = db.cursor()
     c.execute('SELECT * FROM users;')
     results = c.fetchall()
     return results == []
     
 def check_pass(u):
-    db = sqlite3.connect(deployPath)
+    db = sqlite3.connect(devPath)
     c = db.cursor()
     # print(username)
     c.execute('SELECT password FROM users WHERE username="%s";' %(u))
@@ -54,7 +54,7 @@ def check_pass(u):
     return results[0][0]
 
 def change_pw(u, p):
-    db = sqlite3.connect(deployPath)
+    db = sqlite3.connect(devPath)
     c = db.cursor()
     c.execute('UPDATE users SET password="%s" WHERE username="%s";' %(p, u))
     db.commit()
@@ -65,7 +65,7 @@ def change_pw(u, p):
 
 # Sender - Receiver - Picture64 - Time
 def add_picture(s, r, p, t):
-    db = sqlite3.connect(deployPath)
+    db = sqlite3.connect(devPath)
     c = db.cursor()
     #c = init_cursor()
     c.execute('INSERT INTO pictures VALUES("%s", "%s", "%s", "%s");' %(s, r, p, t))
@@ -74,7 +74,7 @@ def add_picture(s, r, p, t):
     return True
 
 def get_picture(s, r):
-    db = sqlite3.connect(deployPath)
+    db = sqlite3.connect(devPath)
     c = db.cursor()
     c.execute('SELECT * FROM pictures WHERE sender="%s" AND receiver="%s";' %(s, r))
     results = c.fetchall()
@@ -89,7 +89,7 @@ def get_picture(s, r):
 
 # Sender - Receiver - Message - Time
 def add_message(s, r, m, t):
-    db = sqlite3.connect(deployPath)
+    db = sqlite3.connect(devPath)
     c = db.cursor()
     c.execute('INSERT INTO messages VALUES("%s", "%s", "%s", "%s");' %(s, r, m, t))
     db.commit()
@@ -97,7 +97,7 @@ def add_message(s, r, m, t):
     return True
 
 def get_message(s, r):
-    db = sqlite3.connect(deployPath)
+    db = sqlite3.connect(devPath)
     c = db.cursor()
     c.execute('SELECT * FROM messages WHERE sender="%s" AND receiver="%s";' %(s, r))
     results = c.fetchall()
@@ -112,7 +112,7 @@ def get_message(s, r):
 
 # Sender - Message - Time
 def add_global_message(s, m, t):
-    db = sqlite3.connect(deployPath)
+    db = sqlite3.connect(devPath)
     c = db.cursor()
     c.execute('INSERT INTO globalchat VALUES("%s", "%s", "%s");' %(s, m, t))
     db.commit()
@@ -120,7 +120,7 @@ def add_global_message(s, m, t):
     return True
 
 def get_global_message():
-    db = sqlite3.connect(deployPath)
+    db = sqlite3.connect(devPath)
     c = db.cursor()
     c.execute('SELECT * FROM globalchat')
     results = c.fetchall()
