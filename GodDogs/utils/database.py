@@ -127,3 +127,18 @@ def get_global_message():
     else:
         db.close()
         return results
+
+
+# friendslist database
+
+# id - user1 - user2 - status
+# id is id of friendship. every friendship has a unique id
+# user1 is user who first initiated friendship
+# user2 is user who is friended
+# status: 0- no love 1-user1 loves user2 2-user2 loves user1 3-user1 loves user2 loves user1
+
+# Checks if entry exists for that friendship already
+def check_friendship(u1, u2):
+    db = sqlite3.connect
+
+def add_friendship():
