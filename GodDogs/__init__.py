@@ -131,8 +131,6 @@ def messenger():
 
 
 if __name__ == '__main__':
-	if (sys.argv[1]=="d"):
-		print d
     os.environ['DBENV'] = 'GodDog.db'
-	app.debug = False
-	app.run()
+    app.debug = False
+    app.run()

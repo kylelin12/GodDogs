@@ -1,7 +1,7 @@
 import sqlite3, os
 
 #db = sqlite3.connect(os.environ['DBENV'])
-
+print(os.environ['DBENV'])
 db = sqlite3.connect(os.environ['DBENV'])
 c = db.cursor()
 c.execute('CREATE TABLE IF NOT EXISTS users (username TEXT PRIMARY KEY, password TEXT NOT NULL);')
