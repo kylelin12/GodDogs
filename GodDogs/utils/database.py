@@ -138,10 +138,129 @@ def get_global_message():
 # id is id of friendship. every friendship has a unique id
 # user1 is user who first initiated friendship
 # user2 is user who is friended
-# status: 0- no love 1-user1 loves user2 2-user2 loves user1 3-user1 loves user2 loves user1
+# status: 
+#     0: no love 
+#     1: user1 loves user2 
+#     2: user2 loves user1 
+#     3: user1 loves user2 loves user1
 
 # Checks if entry exists for that friendship already
-def check_friendship(u1, u2):
-    db = sqlite3.connect
+# Returns: 
+#     0: No entry exists 
+#     1: user1 - user2 
+#     2: user2 - user1
+def f_listcheck(u1, u2):
+    db = sqlite3.connect(db_file)
+    c = db.cursor()
+    c.execute('SELECT * FROM friendslist WHERE user1="%s" AND user2="%s";'%(u1, u2))
+    results = c.fetchall()
+    if results == []: # If user1 - user2 entry doesn't exist
+        c.execute('SELECT * FROM friendslist WHERE user1="%s" AND user2="%s";' %(u2, u1))
+        results = c.fetchall()
+        if results == []: # If user2 - user1 entry doesn't exist
+            db.close()
+            return 0
+        else: # Else user2 - user1 entry exists
+            db.close()
+            return 2
+    else: # Else user1 - user2 entry exists
+        db.close()
+        return 1
 
-def add_friendship():
+# Updates the database
+def f_dbupdate(action, list_status, u1, u2):
+    db = sqlite3.connect(db_file)
+    c = db.cursor()
+    if action == 0: # If the action is to add friend
+        if list_status == 0: # If the entry doesn't exist then add to database
+            c.execute('INSERT INTO friendslist(user1, user2, status) VALUES("%s", "%s", 1);'%(u1, u2))
+            db.commit()
+            db.close()
+            return True
+        else: # Otherwise the entry exists
+            cur_status = c.execute('SELECT status FROM friendslist WHERE user1="%s" AND user2="%s";'%(u1, u2))
+            if list_status == 1: # If the user adding is in the user1 column
+                if cur_status == 2: # If the other person has already added this user as a friend
+                    c.execute('UPDATE friendslist SET status=3 WHERE user1="%s" AND user2="%s";'%(u1, u2))
+                    db.commit()
+                    db.close()
+                    return True
+                elif cur_status == 0: # If the entry already exists but the users have unfriended each other
+                    c.execute('UPDATE friendslist SET status=1 WHERE user1="%s" AND user2="%s";'%(u1, u2))
+                    db.commit()
+                    db.close()
+                    return True
+                else: # Otherwise the user has already added this friend
+                    return False
+            elif list_status == 2: # If the user adding is in the user2 column
+                if cur_status == 1: # If the other person has already added this user as a friend
+                    c.execute('UPDATE friendslist SET status=3 WHERE user1="%s" AND user2="%s";'%(u1, u2))
+                    db.commit()
+                    db.close()
+                    return True
+                elif cur_status == 0: # If the entry already exists but the users have unfriended each other
+                    c.execute('UPDATE friendslist SET status=2 WHERE user1="%s" AND user2="%s";'%(u1, u2))
+                    db.commit()
+                    db.close()
+                    return True
+                else: # Otherwise the user has already added this friend
+                    return False
+    else: # Otherwise action is remove friend
+        cur_status = c.execute('SELECT status FROM friendslist WHERE user1="%s" AND user2="%s";'%(u1, u2))
+        if list_status == 1: # If the user removing is in user1
+            if cur_status == 1: # If user has added the friend but was not added back
+                c.execute('UPDATE friendslist SET status=0 WHERE user1="%s" AND user2="%s";'%(u1, u2))
+                db.commit()
+                db.close()
+                return True
+            elif cur_status == 3: # If the users are mutual friends
+                c.execute('UPDATE friendslist SET status=2 WHERE user1="%s" AND user2="%s"'%(u1, u2))
+                db.commit()
+                db.close()
+                return True
+            else: # Otherwise the user has already unfriended the friend
+                return False
+        elif list_status == 2: # If the user removing is in user2
+            if cur_status == 2: # If the user has added the friend but was not added back
+                c.execute('UPDATE friendslist SET status=0 WHERE user1="%s" AND user2="%s";'%(u1, u2))
+                db.commit()
+                db.close()
+                return True
+            elif cur_status == 3: # If the users are mutual friends
+                c.execute('UPDATE friendslist SET status=1 WHERE user1="%s" AND user2="%s";'%(u1, u2))
+                db.commit()
+                db.close()
+                return True
+            else: # Otherwise the user has already unfriended the friend
+                return False
+        else: # Otherwise the users are not friends
+            return False
+
+
+# Adds the friendship / updates the friendship status
+# u-user, f-friend to add
+def add_friendship(u, f):
+    list_status = f_listcheck(u, f)
+    if list_status == 0 or list_status == 1: # If neither party has initiated a friendship or the user adding is in the user1 column
+        result = f_dbupdate(0, list_status, u, f)
+    elif list_status == 2: # If the user adding is in the user2 column
+        result = f_dbupdate(0, list_status, f, u)
+    else: # Otherwise the user has already added the friend as a friend
+        return "Error: Already friends"
+    return result
+
+def remove_friendship(u, f):
+    list_status = f_listcheck(u, f)
+    if list_status == 1: # If the user removing is in the user1 column
+        result = f_dbupdate(1, list_status, u, f)
+    elif list_status == 2: # If the user removing is in the user2 column
+        result = f_dbupdate(1, list_status, f, u)
+    else: # Otherwise the user has already unfriended that friend
+        return "Error: Not friends anyway"
+    return result
+
+
+    
+
+        
+
