@@ -155,13 +155,15 @@ def storePicData():
 
 @app.route("/messenger", methods=['GET','POST'])
 def messenger():
-    if request.method == 'POST':
-        return redirect(url_for('messenger'))
-    if auth.logged_in():
-	    return render_template("messenger.html", username=session['username'])
-    else:
-        session['alert-type'] = 'error'
-        flash('Please log in before checking your messages')
+	if request.method == 'POST':
+        	return redirect(url_for('messenger'))
+	if auth.logged_in():
+		fList = database.f_getlist(session['username'])
+		print fList
+		return render_template("messenger.html", username=session['username'])
+	else:
+        	session['alert-type'] = 'error'
+        	flash('Please log in before checking your messages')
         return redirect(url_for('login'))
 
 if __name__ == '__main__':
