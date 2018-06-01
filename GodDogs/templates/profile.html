@@ -21,17 +21,17 @@
                     <hr>
                     <!-- IF FRIENDED THEN SHOW UNFRIEND ELSE SHOW FRIEND BUTTON -->
                     {% if status == 2 %} <!--If mutual friends-->
-                    <a href="{{url_for('removefriend', name={{name}})}}" class="btn btn-mutualf">
+                    <a href="{{url_for('removefriend', name=name)}}" class="btn btn-mutualf">
                         <i class="fab fa-gratipay"></i>
                         Mutual Friend
                     </a>
                     {% elif status == 1 %} <!--Else just friends-->
-                    <a href="{{url_for('removefriend', name={{name}})}}" class="btn btn-addedf">
+                    <a href="{{url_for('removefriend', name=name)}}" class="btn btn-addedf">
                         <i class="fas fa-spinner fa-pulse"></i>
                         Friends 
                     </a>
                     {% else %} <!--Else add friend-->
-                    <a href="{{url_for('addfriend', name={{name}})}}" class="btn btn-addf">
+                    <a href="{{url_for('addfriend', name=name)}}" class="btn btn-addf">
                         <i class="fas fa-hands-helping"></i>
                         Add Friend
                     </a>
