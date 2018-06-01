@@ -4,6 +4,8 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 global db_file
 db_file = basedir + "/../GodDog.db"
 
+print db_file
+
 db = sqlite3.connect(db_file)
 c = db.cursor()
 c.execute('CREATE TABLE IF NOT EXISTS users (username TEXT PRIMARY KEY, password TEXT NOT NULL);')
@@ -148,7 +150,7 @@ def f_getlist(user):
     db = sqlite3.connect(db_file)
     c = db.cursor()
     c.execute('SELECT * FROM friendslist WHERE user1="%s" OR user2="%s";'%(user, user))
-    results = c.fetchall()
+    results = c.fetchall()  
     return results
 
 # Checks if entry exists for that friendship already
