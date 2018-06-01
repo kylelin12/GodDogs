@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{% block title %}{% endblock %} | Dogechat</title>
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <!-- Bootstrap core CSS -->
+    <link href="{{url_for('static', filename='bs/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{url_for('static', filename='css/frame.css')}}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    {% block styles %}
+    {% endblock %}
+
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="{{url_for('index')}}">
+            <i class="fas fa-user-secret"></i> Dogechat
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('index')}}">Home
+              </a>
+            </li>
+            {% block showlog %}
+                {% if logged_in() %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('gchat')}}">GChat
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('messenger')}}">Messenger
+                    </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{url_for('profile', name=session['username'])}}">Profile</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{url_for('friendslist')}}">Friends</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-danger btn-md" href="{{url_for('logout')}}">
+                        <i class="fas fa-door-open"></i>
+                        Logout
+                    </a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="btn btn-success btn-md" href="{{url_for('login')}}">
+                        <i class="fas fa-door-closed"></i>
+                        Login
+                    </a>
+                </li>
+                {% endif %}
+            {% endblock %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="row">
+        <div id="flashed_messages">
+          {% for message in get_flashed_messages() %}
+            {% if session['alert-type'] == 'error' %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4>Error:</h4>
+              <p>{{ message }}</p>
+            </div>
+            {% elif session['alert-type'] == 'notice' %}
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4>Notice:</h4>
+              <p>{{ message }}</p>
+            </div>
+            {% elif session['alert-type'] == 'success' %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4>Success:</h4>
+              <p>{{ message }}</p>
+            </div>
+            {% else %}
+            <div class="alert alert-dark alert-dismissible fade show" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4>Message:</h4>
+              <p>{{ message }}</p>
+            </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Page Content -->
+    {% block body %}
+    {% endblock %}
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="{{url_for('static', filename='bs/js/jquery-3.3.1.min.js')}}"></script>
+    <script src="{{url_for('static', filename='bs/js/bootstrap.bundle.min.js')}}"></script>
+    {% block jscripts %}
+    {% endblock %}
+  </body>
+
+</html>
