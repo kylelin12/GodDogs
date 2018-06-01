@@ -68,12 +68,26 @@ def friendslist():
         return redirect(url_for('login'))
 
 @app.route('/addfriend', methods=['POST'])
-def addfriend():
-    return database.add_friendship(session['username'], "FRIENDPLACEHOLDER")
+def addfriend(friend):
+    result = database.add_friendship(session['username'], friend)
+    if result == True:
+        session['alert-type'] = 'success'
+        flash('You\'ve successfully added %s to your friends list'%(friend))
+    else:
+        session['alert-type'] = 'error'
+        flash('An error occured when trying to add %s to your friends list'%(friend))
+    return redirect(url_for('friendslist'))
 
 @app.route('/removefriend', methods=['POST'])
-def removefriend():
-    return database.remove_friendship(session['username'], "FRIENDPLACEHOLDER")
+def removefriend(friend):
+    result = database.remove_friendship(session['username'], friend)
+    if result == True:
+        session['alert-type'] = 'success'
+        flash('You\'ve succcessfully removed %s from your friends list'%(friend))
+    else:
+        session['alert-type'] = 'error'
+        flash('An error occured when trying to remove %s from your friends list'%(friend))
+    return redirect(url_for('friendslist'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
