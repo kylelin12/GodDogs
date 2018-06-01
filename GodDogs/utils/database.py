@@ -147,7 +147,7 @@ def get_global_message():
 def f_getlist(user):
     db = sqlite3.connect(db_file)
     c = db.cursor()
-    c.execute('SELECT * FROM friendslist WHERE user1="%s" OR user2="%s";'%(user))
+    c.execute('SELECT * FROM friendslist WHERE user1="%s" OR user2="%s";'%(user, user))
     results = c.fetchall()
     return results
 
