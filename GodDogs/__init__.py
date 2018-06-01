@@ -20,14 +20,14 @@ DIR = os.path.dirname(__file__)
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        redirect(url_for('index'))
+        return redirect(url_for('index'))
     return render_template('index.html')
 
 # Global chatroom
 @app.route('/gchat', methods=['GET', 'POST'])
 def gchat():
     if request.method == 'POST':
-        redirect(url_for('gchat'))
+        return redirect(url_for('gchat'))
     if auth.logged_in():
         return render_template('gchat.html')
     else:
@@ -40,7 +40,7 @@ def gchat():
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
     if request.method == 'POST':
-        redirect(url_for('profile'))
+        return redirect(url_for('profile'))
     if auth.logged_in():
         return render_template('profile.html', name='DANIEL')
     else:
@@ -53,7 +53,7 @@ def profile():
 @app.route('/friendslist', methods=['GET', 'POST'])
 def friendslist():
     if request.method == 'POST':
-        redirect(url_for('friendslist'))
+        return redirect(url_for('friendslist'))
     if auth.logged_in():
         return render_template('friendslist.html', name=session['username'])
     else:
@@ -127,10 +127,15 @@ def storePicData():
 
 @app.route("/messenger", methods=['GET','POST'])
 def messenger():
-	return render_template("messenger.html",username=session['username'])
-
+    if request.method == 'POST':
+        return redirect(url_for('messenger'))
+    if auth.logged_in():
+	    return render_template("messenger.html", username=session['username'])
+    else:
+        session['alert-type'] = 'error'
+        flash('Please log in before checking your messages')
+        return redirect(url_for('login'))
 
 if __name__ == '__main__':
-    os.environ['DBENV'] = 'GodDog.db'
     app.debug = False
     app.run()

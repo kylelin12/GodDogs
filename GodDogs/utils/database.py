@@ -1,6 +1,5 @@
 import sqlite3, os
 
-
 basedir = os.path.abspath(os.path.dirname(__file__))
 global db_file
 db_file = basedir + "/../GodDog.db"
