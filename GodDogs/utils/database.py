@@ -143,6 +143,14 @@ def get_global_message():
 #     2: user2 loves user1 
 #     3: user1 loves user2 loves user1
 
+# Gets the friends of a person
+def f_getlist(user):
+    db = sqlite3.connect(db_file)
+    c = db.cursor()
+    c.execute('SELECT * FROM friendslist WHERE user1="%s" OR user2="%s";'%(user))
+    results = c.fetchall()
+    return results
+
 # Checks if entry exists for that friendship already
 # Returns: 
 #     0: No entry exists 
@@ -165,6 +173,38 @@ def f_listcheck(u1, u2):
     else: # Else user1 - user2 entry exists
         db.close()
         return 1
+
+# Returns the current status for displaying various buttons
+# Returns:
+#    0: Not friends (Display add friend)
+#    1: Added friend (Display friends)
+#    2: Mutual friends (Display mutual friend) 
+def f_getstatus(u1, u2):
+    db = sqlite3.connect(db_file)
+    c = db.cursor()
+    list_status = f_listcheck(u1, u2)
+    if list_status == 0: # If the entry doesn't exist
+        return 0
+    else:
+        cur_status = c.execute('SELECT status FROM friendslist WHERE user1="%s" and user2="%s";'%(u1, u2))
+        if list_status == 1: # If user1 is in the user1 column
+            if cur_status == 1: # If user1 has added user2 then display friends
+                return 1
+            elif cur_status == 3: # If both users are friends then display mutual friends
+                return 2
+            else: # Otherwise display add friend
+                return 0
+        elif list_status == 2: # If user1 is in the user2 column
+            if cur_status == 2: # If user1 has added user2 then display friends
+                return 1
+            elif cur_status == 3: # If both users are friends then display mutual friends
+                return 2
+            else: # Otherwise display add friend
+                return 0
+        else: # All other scenarios display add friend
+            return 0
+
+
 
 # Updates the database
 def f_dbupdate(action, list_status, u1, u2):
@@ -248,6 +288,8 @@ def add_friendship(u, f):
         return "Error: Already friends"
     return result
 
+# Removes the friendship / updates the friendship status
+# u-user, f-friend to remove
 def remove_friendship(u, f):
     list_status = f_listcheck(u, f)
     if list_status == 1: # If the user removing is in the user1 column

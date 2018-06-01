@@ -21,18 +21,18 @@
                     <hr>
                     <!-- IF FRIENDED THEN SHOW UNFRIEND ELSE SHOW FRIEND BUTTON -->
                     {% if true %}
-                        {% if true %}
+                        {% if true %} <!--If mutual friends-->
                         <a href="#" class="btn btn-mutualf">
                             <i class="fab fa-gratipay"></i>
                             Mutual Friend
                         </a>
-                        {% else %}
+                        {% else %} <!--Else just friends-->
                         <a href="#" class="btn btn-addedf">
                             <i class="fas fa-spinner fa-pulse"></i>
-                            Friend Request Sent
+                            Friends 
                         </a>
                         {% endif %}
-                    {% elif true %}
+                    {% else %} <!--Else add friend-->
                     <a href="#" class="btn btn-addf">
                         <i class="fas fa-hands-helping"></i>
                         Add Friend

@@ -55,11 +55,20 @@ def friendslist():
     if request.method == 'POST':
         return redirect(url_for('friendslist'))
     if auth.logged_in():
-        return render_template('friendslist.html', name=session['username'])
+        f_list = database.f_getlist(session['username'])
+        return render_template('friendslist.html', f_list=f_list)
     else:
         session['alert-type'] = 'error'
         flash('Please log in before checking your friends list')
         return redirect(url_for('login'))
+
+@app.route('/addfriend', methods=['POST'])
+def addfriend():
+    return database.add_friendship(session['username'], "FRIENDPLACEHOLDER")
+
+@app.route('/removefriend', methods=['POST'])
+def removefriend():
+    return database.remove_friendship(session['username'], "FRIENDPLACEHOLDER")
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

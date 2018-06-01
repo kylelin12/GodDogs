@@ -64,3 +64,6 @@ Added friend statuses
 linKyle -- 2018-06-01 09:14:40
 Added route for messenger
 
+linKyle -- 2018-06-01 10:59:27
+More friendslist foundation
+
