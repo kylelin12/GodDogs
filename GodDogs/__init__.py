@@ -37,12 +37,17 @@ def gchat():
 
 # Shows your profile if from top right
 # Shows any user's profile if their name is selected
-@app.route('/profile', methods=['GET', 'POST'])
-def profile():
+@app.route('/profile/<name>', methods=['GET', 'POST'])
+def profile(name):
     if request.method == 'POST':
-        return redirect(url_for('profile'))
+        return redirect(url_for('profile', name=name))
     if auth.logged_in():
-        return render_template('profile.html', name='DANIEL')
+        if auth.u_exists(name):
+            bio = "TESTBIO"
+            status = database.f_getstatus(session['username'], name)
+            return render_template('profile.html', name=name, status=status, bio=bio)
+        else:
+            return render_template('noprofile.html')
     else:
         session['alert-type'] = 'error'
         flash('Please log in before checking your profile')

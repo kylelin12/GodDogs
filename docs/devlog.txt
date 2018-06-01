@@ -67,3 +67,9 @@ Added route for messenger
 linKyle -- 2018-06-01 10:59:27
 More friendslist foundation
 
+linKyle -- 2018-06-01 12:18:19
+PROFILE PAGEScd ../docs/cd ../docs/ VERY WIP
+
+linKyle -- 2018-06-01 12:18:44
+PROFILE PAGES\!\!\!\! VERY WIP
+
