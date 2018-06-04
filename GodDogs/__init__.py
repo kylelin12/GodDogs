@@ -68,7 +68,8 @@ def friendslist():
         return redirect(url_for('login'))
 
 @app.route('/addfriend', methods=['GET', 'POST'])
-def addfriend(friend):
+def addfriend():
+    friend = request.args.get('name')
     result = database.add_friendship(session['username'], friend)
     if result == True:
         session['alert-type'] = 'success'
@@ -79,7 +80,8 @@ def addfriend(friend):
     return redirect(url_for('friendslist'))
 
 @app.route('/removefriend', methods=['GET','POST'])
-def removefriend(friend):
+def removefriend():
+    friend = request.args.get('name')
     result = database.remove_friendship(session['username'], friend)
     if result == True:
         session['alert-type'] = 'success'
