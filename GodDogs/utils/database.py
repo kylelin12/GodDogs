@@ -113,8 +113,7 @@ def get_message(s, r):
 
 # Sender - Message - Time
 def add_global_message(s, m):
-    f = "GodDog.db"
-    db = sqlite3.connect(f)
+    db = sqlite3.connect(db_file)
     c = db.cursor()
     c.execute('INSERT INTO globalchat VALUES("%s", "%s");' %(s, m))
     db.commit()
@@ -122,8 +121,7 @@ def add_global_message(s, m):
     return True
 
 def get_global_message():
-    f = "GodDog.db"
-    db = sqlite3.connect(f)
+    db = sqlite3.connect(db_file)
     c = db.cursor()
     c.execute('SELECT * FROM globalchat')
     results = c.fetchall()
