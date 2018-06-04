@@ -57,7 +57,7 @@ def friendslist():
     if request.method == 'POST':
         return redirect(url_for('friendslist'))
     if auth.logged_in():
-        f_list = database.f_getlist(session['username'])
+        f_list = database.f_getlist(session.get('username'))
         return render_template('friendslist.html', f_list=f_list)
     else:
         session['alert-type'] = 'error'
@@ -67,7 +67,7 @@ def friendslist():
 @app.route('/addfriend', methods=['GET', 'POST'])
 def addfriend():
     friend = request.args.get('name')
-    result = database.add_friendship(session['username'], friend)
+    result = database.add_friendship(session.get('username'), friend)
     if result == True:
         session['alert-type'] = 'success'
         flash('You\'ve successfully added %s to your friends list'%(friend))
@@ -79,7 +79,7 @@ def addfriend():
 @app.route('/removefriend', methods=['GET','POST'])
 def removefriend():
     friend = request.args.get('name')
-    result = database.remove_friendship(session['username'], friend)
+    result = database.remove_friendship(session.get('username'), friend)
     if result == True:
         session['alert-type'] = 'success'
         flash('You\'ve succcessfully removed %s from your friends list'%(friend))
@@ -145,7 +145,7 @@ def storePicData():
 	#print 'xd'
 	#print request.form['data']
 	#print request.form['targetUserArray']
-	print session['username']
+	print session.get('username')
         print request.form['targetUserArray']
         userList = request.form['targetUserArray'].split(",")
         for receiver in userList:
@@ -157,9 +157,9 @@ def messenger():
 	if request.method == 'POST':
         	return redirect(url_for('messenger'))
 	if auth.logged_in():
-		fList = database.f_getlist(session['username'])
+		fList = database.f_getlist(session.get('username'))
 		print fList
-		return render_template("messenger.html", username=session['username'])
+		return render_template("messenger.html", username=session.get('username')
 	else:
         	session['alert-type'] = 'error'
         	flash('Please log in before checking your messages')
