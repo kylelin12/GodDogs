@@ -1,6 +1,10 @@
 {% extends 'frame.html' %}
 
-{% block title %}{{name}}'s friends list{% endblock %}
+{% block title %}{{session['username']}}'s friends list{% endblock %}
+
+{% block styles %}
+<link href="{{url_for('static', filename='css/friends.css')}}" rel="stylesheet">
+{% endblock %}
 
 {% block body %}
 <!--Friends list-->
@@ -22,7 +26,65 @@
                             </tr>
                         </thead>
                         <tbody id="friendslist-input">
-                            
+                            {% for row in f_list %}
+                                {% if row[3] == 0 %} <!--If neither are friends then do nothing-->
+                                {% else %}
+                                <tr>
+                                    <td> 
+                                        <!--Name of friend
+                                            NEEDS TO BE MODIFIED LATER TO ADD PROFILE LINK-->
+                                        {% if row[1] == session['username'] %}
+                                        {{row[2]}}
+                                        {% else %}
+                                        {{row[1]}}
+                                        {% endif %}
+                                    </td>
+                                    <td> <!--Different button depending on status of friendship-->
+                                        {% if row[1] == session['username'] %} <!--If user is in user1-->
+                                            {% if row[3] == 3 %} <!--Mutual Friends-->
+                                            <a href="{{url_for('removefriend', name=row[2])}}" class="btn btn-mutualf">
+                                                <i class="fab fa-gratipay"></i>
+                                                Mutual Friend
+                                            </a>
+                                            {% elif row[3] == 1 %} <!--Friends-->
+                                            <a href="{{url_for('removefriend', name=row[2])}}" class="btn btn-addedf">
+                                                <i class="fas fa-spinner fa-pulse"></i>
+                                                Friends
+                                            </a>
+                                            {% else %} <!--Add Friend-->
+                                            <a href="{{url_for('addfriend', name=row[2])}}" class="btn btn-addf">
+                                                <i class="fas fa-hands-helping"></i>
+                                                Add Friend
+                                            </a>
+                                            {% endif %}
+                                        {% else %} <!--If friend is in user1-->
+                                            {% if row[3] == 3 %} <!--Mutual Friends-->
+                                            <a href="{{url_for('removefriend', name=row[1])}}" class="btn btn-mutualf">
+                                                <i class="fab fa-gratipay"></i>
+                                                Mutual Friend
+                                            </a>
+                                            {% elif row[3] == 2 %} <!--Friends-->
+                                            <a href="{{url_for('removefriend', name=row[1])}}" class="btn btn-addedf">
+                                                <i class="fas fa-spinner fa-pulse"></i>
+                                                Friends
+                                            </a>
+                                            {% else %} <!--Add Friend-->
+                                            <a href="{{url_for('addfriend', name=row[1])}}" class="btn btn-addf">
+                                                <i class="fas fa-hands-helping"></i>
+                                                Add Friend
+                                            </a>
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                    <td> <!--Button to send message to friend-->
+                                        <button class="btn btn-msgf">Send Message</button>
+                                    </td>
+                                    <td> <!--Button to poke friend-->
+                                        <button class="btn btn-info">Poke</button>
+                                    </td>
+                                </tr>
+                                {% endif %}
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>

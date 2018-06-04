@@ -17,29 +17,27 @@
             <div class="row user-detail">
                 <div class="col-lg-12 col-sm-12 col-12">
                     <img id="profile-img" class="rounded-circle img-thumbnail">
-                    <h5>Danny Phantom</h5>
+                    <h5>{{ name }}</h5>
                     <hr>
                     <!-- IF FRIENDED THEN SHOW UNFRIEND ELSE SHOW FRIEND BUTTON -->
-                    {% if true %}
-                        {% if true %}
-                        <a href="#" class="btn btn-mutualf">
-                            <i class="fab fa-gratipay"></i>
-                            Mutual Friend
-                        </a>
-                        {% else %}
-                        <a href="#" class="btn btn-addedf">
-                            <i class="fas fa-spinner fa-pulse"></i>
-                            Friend Request Sent
-                        </a>
-                        {% endif %}
-                    {% elif true %}
-                    <a href="#" class="btn btn-addf">
+                    {% if status == 2 %} <!--If mutual friends-->
+                    <a href="{{url_for('removefriend', name=name)}}" class="btn btn-mutualf">
+                        <i class="fab fa-gratipay"></i>
+                        Mutual Friend
+                    </a>
+                    {% elif status == 1 %} <!--Else just friends-->
+                    <a href="{{url_for('removefriend', name=name)}}" class="btn btn-addedf">
+                        <i class="fas fa-spinner fa-pulse"></i>
+                        Friends 
+                    </a>
+                    {% else %} <!--Else add friend-->
+                    <a href="{{url_for('addfriend', name=name)}}" class="btn btn-addf">
                         <i class="fas fa-hands-helping"></i>
                         Add Friend
                     </a>
                     {% endif %}
                     <!-- IF FRIENDED THEN MSG BUTTON ELSE DISABLED WITH TOOLTIP YOU MUST BE FRIENDS-->
-                    {% if true %}
+                    {% if status == 2 %}
                     <a href="#" class="btn btn-msgf">
                         <i class="fas fa-envelope"></i>
                         Message
@@ -52,32 +50,8 @@
                     {% endif %}
 
                     <hr>
-                    <span style="white-space: pre-line;">(He's a phantom)
-                            (Danny Phantom, Danny Phantom, Danny Phantom)
-                            
-                            Young Danny Fenton, he was just 14,
-                            When his parents built a very strange machine.
-                            It was designed to view, a world unseen.
-                            (He's gonna catch em all 'cause he's Danny Phantom.)
-                            
-                            When it didn't quite work, his folks, they just quit,
-                            But then Danny took a look inside of it,
-                            There was a great big flash, everything just changed,
-                            His molecules got all rearranged!
-                            
-                            (Phantom, Phantom)
-                            
-                            When he first woke up, he realized,
-                            He had snow white hair, and glowin' green eyes.
-                            He could walk through walls, disappear, and fly,
-                            He was much more unique than the other guys.
-                            And it was then that he knew what he had to do,
-                            He had to stop all the ghosts that were comin' through,
-                            He's here to fight, for me and you!
-                            
-                            He's gonna catch 'em all, 'cause he's Danny Phantom,
-                            Gonna catch 'em all, 'cause he's Danny Phantom,
-                            Gonna catch 'em all, 'cause he's (Danny Phantom.)</span>
+                    <span style="white-space: pre-line;"> <!--Biography-->
+                            {{ bio }}</span>
                 </div>
             </div>
         </div>

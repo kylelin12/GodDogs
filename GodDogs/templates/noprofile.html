@@ -1,0 +1,29 @@
+{% extends 'frame.html' %}
+
+{% block title %}Profile N/A{% endblock %}
+
+{% block styles %}
+<link href="{{url_for('static', filename='css/profile.css')}}" rel="stylesheet">
+<link href="{{url_for('static', filename='css/friends.css')}}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="offset-lg-2 col-lg-8 col-sm-10 col-12 main-section text-center">
+            <div class="row">
+                <div class="col-lg-12 col-sm-12 col-12 profile-header"></div>
+            </div>
+            <div class="row user-detail">
+                <div class="col-lg-12 col-sm-12 col-12">
+                    <h4 style="color: red;">THAT USER DOESN'T EXIST!</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block jscripts %}
+<script src="{{url_for('static', filename='js/dog.js')}}"></script>
+{% endblock %}

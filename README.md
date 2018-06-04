@@ -1,5 +1,7 @@
 http://159.65.235.50/
 
+# RUN ON FIREFOX!!!!!!!!!!!!!
+
 # Dogechat
 ## Team: GodDogs
 ### Team Members: Jonathan Quang, Daniel Chernovolenko, Kyle Lin, Adrian Boylan

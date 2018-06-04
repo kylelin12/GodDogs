@@ -10,10 +10,7 @@ UPLOAD_FOLDER = 'static/uploads'
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-def make_secret_key():
-    return os.urandom(32)
-
-app.secret_key = make_secret_key()
+app.secret_key = os.urandom(32)
 
 app.jinja_env.globals.update(logged_in = auth.logged_in)
 
@@ -24,14 +21,14 @@ messages = database.get_global_message()
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        redirect(url_for('index'))
+        return redirect(url_for('index'))
     return render_template('index.html')
 
 # Global chatroom
 @app.route('/gchat', methods=['GET', 'POST'])
 def gchat():
     if request.method == 'POST':
-        redirect(url_for('gchat'))
+        return redirect(url_for('gchat'))
     if auth.logged_in():
         return render_template('gchat.html', messages=messages)
     else:
@@ -66,12 +63,17 @@ def getHtml():
 
 # Shows your profile if from top right
 # Shows any user's profile if their name is selected
-@app.route('/profile', methods=['GET', 'POST'])
-def profile():
+@app.route('/profile/<name>', methods=['GET', 'POST'])
+def profile(name):
     if request.method == 'POST':
-        redirect(url_for('profile'))
+        return redirect(url_for('profile', name=name))
     if auth.logged_in():
-        return render_template('profile.html', name='DANIEL')
+        if auth.u_exists(name):
+            bio = "TESTBIO"
+            status = database.f_getstatus(session['username'], name)
+            return render_template('profile.html', name=name, status=status, bio=bio)
+        else:
+            return render_template('noprofile.html')
     else:
         session['alert-type'] = 'error'
         flash('Please log in before checking your profile')
@@ -82,13 +84,38 @@ def profile():
 @app.route('/friendslist', methods=['GET', 'POST'])
 def friendslist():
     if request.method == 'POST':
-        redirect(url_for('friendslist'))
+        return redirect(url_for('friendslist'))
     if auth.logged_in():
-        return render_template('friendslist.html', name=session['username'])
+        f_list = database.f_getlist(session['username'])
+        return render_template('friendslist.html', f_list=f_list)
     else:
         session['alert-type'] = 'error'
         flash('Please log in before checking your friends list')
         return redirect(url_for('login'))
+
+@app.route('/addfriend', methods=['GET', 'POST'])
+def addfriend():
+    friend = request.args.get('name')
+    result = database.add_friendship(session['username'], friend)
+    if result == True:
+        session['alert-type'] = 'success'
+        flash('You\'ve successfully added %s to your friends list'%(friend))
+    else:
+        session['alert-type'] = 'error'
+        flash('An error occured when trying to add %s to your friends list'%(friend))
+    return redirect(url_for('friendslist'))
+
+@app.route('/removefriend', methods=['GET','POST'])
+def removefriend():
+    friend = request.args.get('name')
+    result = database.remove_friendship(session['username'], friend)
+    if result == True:
+        session['alert-type'] = 'success'
+        flash('You\'ve succcessfully removed %s from your friends list'%(friend))
+    else:
+        session['alert-type'] = 'error'
+        flash('An error occured when trying to remove %s from your friends list'%(friend))
+    return redirect(url_for('friendslist'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -153,6 +180,19 @@ def storePicData():
         for receiver in userList:
             database.add_picture(session['username'],receiver,request.form['data'],int(round(time_.time()*1000)))
 	return "pics Processed"
+
+@app.route("/messenger", methods=['GET','POST'])
+def messenger():
+	if request.method == 'POST':
+        	return redirect(url_for('messenger'))
+	if auth.logged_in():
+		fList = database.f_getlist(session['username'])
+		print fList
+		return render_template("messenger.html", username=session['username'])
+	else:
+        	session['alert-type'] = 'error'
+        	flash('Please log in before checking your messages')
+        return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.debug = False
