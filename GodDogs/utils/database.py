@@ -11,8 +11,13 @@ c = db.cursor()
 c.execute('CREATE TABLE IF NOT EXISTS users (username TEXT PRIMARY KEY, password TEXT NOT NULL);')
 c.execute('CREATE TABLE IF NOT EXISTS pictures (sender TEXT, receiver TEXT, picture64 BLOB, time INT);')
 c.execute('CREATE TABLE IF NOT EXISTS messages (sender TEXT, receiver TEXT, message TEXT, time INT);')
+<<<<<<< HEAD
+c.execute('CREATE TABLE IF NOT EXISTS globalchat (sender TEXT, message TEXT, time INT);')
+c.execute('CREATE TABLE IF NOT EXISTS friendslist (user1 TEXT NOT NULL, user2 TEXT NOT NULL, status INT NOT NULL);')
+=======
 c.execute('CREATE TABLE IF NOT EXISTS globalchat (sender TEXT, message TEXT);')
 c.execute('CREATE TABLE IF NOT EXISTS friendslist (id INT PRIMARY KEY, user1 TEXT NOT NULL, user2 TEXT NOT NULL, status INT NOT NULL)')
+>>>>>>> f74aed7604d5048f40350a7d31112f9d19486c28
 db.commit()
 db.close()
 
@@ -213,7 +218,7 @@ def f_dbupdate(action, list_status, u1, u2):
     c = db.cursor()
     if action == 0: # If the action is to add friend
         if list_status == 0: # If the entry doesn't exist then add to database
-            c.execute('INSERT INTO friendslist(user1, user2, status) VALUES("%s", "%s", 1);'%(u1, u2))
+            c.execute('INSERT INTO friendslist VALUES("%s", "%s", 1);'%(u1, u2))
             db.commit()
             db.close()
             return True
