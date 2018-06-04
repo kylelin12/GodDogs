@@ -67,7 +67,7 @@ def friendslist():
         flash('Please log in before checking your friends list')
         return redirect(url_for('login'))
 
-@app.route('/addfriend', methods=['POST'])
+@app.route('/addfriend', methods=['GET', 'POST'])
 def addfriend(friend):
     result = database.add_friendship(session['username'], friend)
     if result == True:
@@ -78,7 +78,7 @@ def addfriend(friend):
         flash('An error occured when trying to add %s to your friends list'%(friend))
     return redirect(url_for('friendslist'))
 
-@app.route('/removefriend', methods=['POST'])
+@app.route('/removefriend', methods=['GET','POST'])
 def removefriend(friend):
     result = database.remove_friendship(session['username'], friend)
     if result == True:
