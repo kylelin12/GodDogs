@@ -11,8 +11,13 @@ c = db.cursor()
 c.execute('CREATE TABLE IF NOT EXISTS users (username TEXT PRIMARY KEY, password TEXT NOT NULL);')
 c.execute('CREATE TABLE IF NOT EXISTS pictures (sender TEXT, receiver TEXT, picture64 BLOB, time INT);')
 c.execute('CREATE TABLE IF NOT EXISTS messages (sender TEXT, receiver TEXT, message TEXT, time INT);')
+<<<<<<< HEAD
 c.execute('CREATE TABLE IF NOT EXISTS globalchat (sender TEXT, message TEXT, time INT);')
 c.execute('CREATE TABLE IF NOT EXISTS friendslist (user1 TEXT NOT NULL, user2 TEXT NOT NULL, status INT NOT NULL);')
+=======
+c.execute('CREATE TABLE IF NOT EXISTS globalchat (sender TEXT, message TEXT);')
+c.execute('CREATE TABLE IF NOT EXISTS friendslist (id INT PRIMARY KEY, user1 TEXT NOT NULL, user2 TEXT NOT NULL, status INT NOT NULL)')
+>>>>>>> f74aed7604d5048f40350a7d31112f9d19486c28
 db.commit()
 db.close()
 
@@ -112,25 +117,26 @@ def get_message(s, r):
 # globalchat Database
 
 # Sender - Message - Time
-def add_global_message(s, m, t):
-    db = sqlite3.connect(db_file)
+def add_global_message(s, m):
+    f = "GodDog.db"
+    db = sqlite3.connect(f)
     c = db.cursor()
-    c.execute('INSERT INTO globalchat VALUES("%s", "%s", "%s");' %(s, m, t))
+    c.execute('INSERT INTO globalchat VALUES("%s", "%s");' %(s, m))
     db.commit()
     db.close()
     return True
 
 def get_global_message():
-    db = sqlite3.connect(db_file)
+    f = "GodDog.db"
+    db = sqlite3.connect(f)
     c = db.cursor()
     c.execute('SELECT * FROM globalchat')
     results = c.fetchall()
-    if results == []:
-        db.close()
-        return None
-    else:
-        db.close()
+    db.close()
+    if results:
         return results
+    else:
+        return []
 
 
 # friendslist database

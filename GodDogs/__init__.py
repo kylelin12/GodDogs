@@ -1,17 +1,21 @@
-from flask import Flask, url_for, redirect, session, request, render_template, flash
+from flask import *
 from utils import auth,database
 import sqlite3
+from werkzeug.utils import secure_filename
 import time as time_
 
 import os
+UPLOAD_FOLDER = 'static/uploads'
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 app.secret_key = os.urandom(32)
 
 app.jinja_env.globals.update(logged_in = auth.logged_in)
 
 DIR = os.path.dirname(__file__)
+messages = database.get_global_message()
 
 # Index page
 @app.route('/', methods=['GET', 'POST'])
@@ -26,11 +30,36 @@ def gchat():
     if request.method == 'POST':
         return redirect(url_for('gchat'))
     if auth.logged_in():
-        return render_template('gchat.html')
+        return render_template('gchat.html', messages=messages)
     else:
         session['alert-type'] = 'error'
         flash('Please log in before joining the global chat')
         return redirect(url_for('login'))
+
+@app.route("/_receiveMessage", methods=["POST"])
+def receiveMessage():
+    message = request.form['chatText']
+    name = session['username']
+    if message.strip() != '':
+        messages.append((name, message))
+        database.add_global_message(name, message)
+    return ('', 204)
+
+@app.route("/_sendMessages")
+def sendMessagesList():
+    rendered = getHtml()
+    return rendered
+
+def getHtml():
+    text = '''  {% for name, msg in messages|reverse %}
+                    {% if loop.index0 % 2 == 0 %}
+                        <div class="row message-bubble" style="background-color: #F5F5F5"> <p class="text-muted">{{ name }}</p> <p>{{ msg }}</p> </div> <br>
+                    {% else %}
+                        <div class="row message-bubble"> <p class="text-muted">{{ name }}</p> <p>{{ msg }}</p> </div> <br>
+                    {% endif %}
+                {% endfor %}'''
+    return render_template_string(text, messages=messages)
+
 
 # Shows your profile if from top right
 # Shows any user's profile if their name is selected
