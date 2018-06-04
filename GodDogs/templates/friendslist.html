@@ -41,34 +41,34 @@
                                 <tr> <!--Different button depending on status of friendship-->
                                     {% if row[1] == session['username'] %} <!--If user is in user1-->
                                         {% if row[3] == 3 %} <!--Mutual Friends-->
-                                        <a href="{{url_for('removefriend', row[2])}}" class="btn btn-mutualf">
+                                        <a href="{{url_for('removefriend', name=row[2])}}" class="btn btn-mutualf">
                                             <i class="fab fa-gratipay"></i>
                                             Mutual Friend
                                         </a>
                                         {% elif row[3] == 1 %} <!--Friends-->
-                                        <a href="{{url_for('removefriend', row[2])}}" class="btn btn-addedf">
+                                        <a href="{{url_for('removefriend', name=row[2])}}" class="btn btn-addedf">
                                             <i class="fas fa-spinner fa-pulse"></i>
                                             Friends
                                         </a>
                                         {% else %} <!--Add Friend-->
-                                        <a href="{{url_for('addfriend', row[2])}}" class="btn btn-addf">
+                                        <a href="{{url_for('addfriend', name=row[2])}}" class="btn btn-addf">
                                             <i class="fas fa-hands-helping"></i>
                                             Add Friend
                                         </a>
                                         {% endif %}
                                     {% else %} <!--If friend is in user1-->
                                         {% if row[3] == 3 %} <!--Mutual Friends-->
-                                        <a href="{{url_for('removefriend', row[1])}}" class="btn btn-mutualf">
+                                        <a href="{{url_for('removefriend', name=row[1])}}" class="btn btn-mutualf">
                                             <i class="fab fa-gratipay"></i>
                                             Mutual Friend
                                         </a>
                                         {% elif row[3] == 2 %} <!--Friends-->
-                                        <a href="{{url_for('removefriend', row[1])}}" class="btn btn-addedf">
+                                        <a href="{{url_for('removefriend', name=row[1])}}" class="btn btn-addedf">
                                             <i class="fas fa-spinner fa-pulse"></i>
                                             Friends
                                         </a>
                                         {% else %} <!--Add Friend-->
-                                        <a href="{{url_for('addfriend', row[1])}}" class="btn btn-addf">
+                                        <a href="{{url_for('addfriend', name=row[1])}}" class="btn btn-addf">
                                             <i class="fas fa-hands-helping"></i>
                                             Add Friend
                                         </a>
