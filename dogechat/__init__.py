@@ -127,7 +127,28 @@ def register():
             flash('The passwords you entered do not match.')
             
     return render_template('register.html')
+@app.route("/_receiveMessage", methods=["POST"])
+def receiveMessage():
+    message = request.form['chatText']
+    name = session['username']
+    if message.strip() != '':
+        messages.append((name, message))
+        database.add_global_message(name, message)
+    return ('', 204)
 
+@app.route("/_sendMessages")
+def sendMessagesList():
+    rendered = getHtml()
+    return rendered
+def getHtml():
+    text = '''  {% for name, msg in messages|reverse %}
+                    {% if loop.index0 % 2 == 0 %}
+                        <div class="row message-bubble" style="background-color: #F5F5F5"> <p class="text-muted">{{ name }}</p> <p>{{ msg }}</p> </div> <br>
+                    {% else %}
+                        <div class="row message-bubble"> <p class="text-muted">{{ name }}</p> <p>{{ msg }}</p> </div> <br>
+                    {% endif %}
+                {% endfor %}'''
+    return render_template_string(text, messages=messages)
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     # Delete session cookie etc.
