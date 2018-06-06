@@ -40,7 +40,7 @@
                                         {% endif %}
                                     </td>
                                     <td> <!--Different button depending on status of friendship-->
-                                        {% if row[1] == g.username %} <!--If user is in user1-->
+                                        {% if row[1] == g_username %} <!--If user is in user1-->
                                             {% if row[3] == 3 %} <!--Mutual Friends-->
                                             <a href="{{url_for('removefriend', name=row[2])}}" class="btn btn-mutualf">
                                                 <i class="fab fa-gratipay"></i>
