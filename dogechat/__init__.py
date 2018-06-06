@@ -70,7 +70,7 @@ def friendslist():
 @app.route('/addfriend', methods=['GET', 'POST'])
 def addfriend():
     friend = request.args.get('name')
-    result = database.add_friendship(g.username, friend)
+    result = database.add_friendship(g_username, friend)
     if result == True:
         session['alert-type'] = 'success'
         flash('You\'ve successfully added %s to your friends list'%(friend))
@@ -82,7 +82,7 @@ def addfriend():
 @app.route('/removefriend', methods=['GET','POST'])
 def removefriend():
     friend = request.args.get('name')
-    result = database.remove_friendship(g.username, friend)
+    result = database.remove_friendship(g_username, friend)
     if result == True:
         session['alert-type'] = 'success'
         flash('You\'ve succcessfully removed %s from your friends list'%(friend))
