@@ -2,13 +2,13 @@ import sqlite3, os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 global db_file
-db_file = basedir + "/../GodDog.db"
+db_file = basedir + "/../dogechat.db"
 
 print db_file
 
 db = sqlite3.connect(db_file)
 c = db.cursor()
-c.execute('CREATE TABLE IF NOT EXISTS users (username TEXT PRIMARY KEY, password TEXT NOT NULL);')
+c.execute('CREATE TABLE IF NOT EXISTS users (username TEXT PRIMARY KEY, password TEXT NOT NULL, bio TEXT);')
 c.execute('CREATE TABLE IF NOT EXISTS pictures (sender TEXT, receiver TEXT, picture64 BLOB, time INT);')
 c.execute('CREATE TABLE IF NOT EXISTS messages (sender TEXT, receiver TEXT, message TEXT, time INT);')
 c.execute('CREATE TABLE IF NOT EXISTS globalchat (sender TEXT, message TEXT, time INT);')
@@ -22,7 +22,7 @@ def add_user(u, p):
     db = sqlite3.connect(db_file)
     c = db.cursor()
     if empty_db():
-        c.execute('INSERT INTO users VALUES("%s", "%s");' %(u, p))
+        c.execute('INSERT INTO users VALUES("%s", "%s", "I am a dog user");' %(u, p))
         db.commit()
         db.close()
         return True
