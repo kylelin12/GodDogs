@@ -1,21 +1,17 @@
-from flask import *
+from flask import Flask, url_for, redirect, session, request, render_template, flash
 from utils import auth,database
 import sqlite3
-from werkzeug.utils import secure_filename
 import time as time_
 
 import os
-UPLOAD_FOLDER = 'static/uploads'
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 app.secret_key = os.urandom(32)
 
 app.jinja_env.globals.update(logged_in = auth.logged_in)
 
 DIR = os.path.dirname(__file__)
-messages = database.get_global_message()
 
 # Index page
 @app.route('/', methods=['GET', 'POST'])
@@ -30,36 +26,11 @@ def gchat():
     if request.method == 'POST':
         return redirect(url_for('gchat'))
     if auth.logged_in():
-        return render_template('gchat.html', messages=messages)
+        return render_template('gchat.html')
     else:
         session['alert-type'] = 'error'
         flash('Please log in before joining the global chat')
         return redirect(url_for('login'))
-
-@app.route("/_receiveMessage", methods=["POST"])
-def receiveMessage():
-    message = request.form['chatText']
-    name = session['username']
-    if message.strip() != '':
-        messages.append((name, message))
-        database.add_global_message(name, message)
-    return ('', 204)
-
-@app.route("/_sendMessages")
-def sendMessagesList():
-    rendered = getHtml()
-    return rendered
-
-def getHtml():
-    text = '''  {% for name, msg in messages|reverse %}
-                    {% if loop.index0 % 2 == 0 %}
-                        <div class="row message-bubble" style="background-color: #F5F5F5"> <p class="text-muted">{{ name }}</p> <p>{{ msg }}</p> </div> <br>
-                    {% else %}
-                        <div class="row message-bubble"> <p class="text-muted">{{ name }}</p> <p>{{ msg }}</p> </div> <br>
-                    {% endif %}
-                {% endfor %}'''
-    return render_template_string(text, messages=messages)
-
 
 # Shows your profile if from top right
 # Shows any user's profile if their name is selected
@@ -86,7 +57,7 @@ def friendslist():
     if request.method == 'POST':
         return redirect(url_for('friendslist'))
     if auth.logged_in():
-        f_list = database.f_getlist(session.get('username'))
+        f_list = database.f_getlist(session['username'])
         return render_template('friendslist.html', f_list=f_list)
     else:
         session['alert-type'] = 'error'
@@ -96,7 +67,7 @@ def friendslist():
 @app.route('/addfriend', methods=['GET', 'POST'])
 def addfriend():
     friend = request.args.get('name')
-    result = database.add_friendship(session.get('username'), friend)
+    result = database.add_friendship(session['username'], friend)
     if result == True:
         session['alert-type'] = 'success'
         flash('You\'ve successfully added %s to your friends list'%(friend))
@@ -108,7 +79,7 @@ def addfriend():
 @app.route('/removefriend', methods=['GET','POST'])
 def removefriend():
     friend = request.args.get('name')
-    result = database.remove_friendship(session.get('username'), friend)
+    result = database.remove_friendship(session['username'], friend)
     if result == True:
         session['alert-type'] = 'success'
         flash('You\'ve succcessfully removed %s from your friends list'%(friend))
@@ -174,7 +145,7 @@ def storePicData():
 	#print 'xd'
 	#print request.form['data']
 	#print request.form['targetUserArray']
-	print session.get('username')
+	print session['username']
         print request.form['targetUserArray']
         userList = request.form['targetUserArray'].split(",")
         for receiver in userList:
@@ -186,9 +157,9 @@ def messenger():
 	if request.method == 'POST':
         	return redirect(url_for('messenger'))
 	if auth.logged_in():
-		fList = database.f_getlist(session.get('username'))
+		fList = database.f_getlist(session['username'])
 		print fList
-		return render_template("messenger.html", username=session.get('username')
+		return render_template("messenger.html", username=session['username'])
 	else:
         	session['alert-type'] = 'error'
         	flash('Please log in before checking your messages')
