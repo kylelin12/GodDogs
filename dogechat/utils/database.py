@@ -187,7 +187,9 @@ def f_getstatus(u1, u2):
     if list_status == 0: # If the entry doesn't exist
         return 0
     else:
-        cur_status = c.execute('SELECT status FROM friendslist WHERE user1="%s" and user2="%s";'%(u1, u2))
+        c.execute('SELECT status FROM friendslist WHERE user1="%s" and user2="%s";'%(u1, u2))
+        results = c.fetchall()
+        cur_status = results[0][2]
         if list_status == 1: # If user1 is in the user1 column
             if cur_status == 1: # If user1 has added user2 then display friends
                 return 1
@@ -218,7 +220,9 @@ def f_dbupdate(action, list_status, u1, u2):
             db.close()
             return True
         else: # Otherwise the entry exists
-            cur_status = c.execute('SELECT status FROM friendslist WHERE user1="%s" AND user2="%s";'%(u1, u2))
+            c.execute('SELECT status FROM friendslist WHERE user1="%s" AND user2="%s";'%(u1, u2))
+            results = c.fetchall()
+            cur_status = results[0][2]
             if list_status == 1: # If the user adding is in the user1 column
                 if cur_status == 2: # If the other person has already added this user as a friend
                     c.execute('UPDATE friendslist SET status=3 WHERE user1="%s" AND user2="%s";'%(u1, u2))
@@ -246,7 +250,9 @@ def f_dbupdate(action, list_status, u1, u2):
                 else: # Otherwise the user has already added this friend
                     return False
     else: # Otherwise action is remove friend
-        cur_status = c.execute('SELECT status FROM friendslist WHERE user1="%s" AND user2="%s";'%(u1, u2))
+        c.execute('SELECT status FROM friendslist WHERE user1="%s" AND user2="%s";'%(u1, u2))
+        results = c.fetchall()
+        cur_status = results[0][1]
         if list_status == 1: # If the user removing is in user1
             if cur_status == 1: # If user has added the friend but was not added back
                 c.execute('UPDATE friendslist SET status=0 WHERE user1="%s" AND user2="%s";'%(u1, u2))
