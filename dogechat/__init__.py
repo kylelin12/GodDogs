@@ -10,7 +10,7 @@ app = Flask(__name__)
 app.secret_key = os.urandom(32)
 
 app.jinja_env.globals.update(logged_in = auth.logged_in)
-global g_username
+g_username = ""
 
 DIR = os.path.dirname(__file__)
 
@@ -99,7 +99,7 @@ def login():
 
         if auth.u_exists(user):
             if auth.login(user, pw):
-                g_username = user
+                global g_username = user
                 session['alert-type'] = 'success'
                 flash('Welcome to Dogechat %s!'%(user))
                 return redirect(url_for('index'))
@@ -160,7 +160,7 @@ def logout():
     # Delete session cookie etc.
     if auth.logged_in():
         auth.logout()
-        g_username = ""
+        global g_username = ""
         session['alert-type'] = 'notice'
         flash('You have been logged out.')
     else:
