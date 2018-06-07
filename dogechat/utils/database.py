@@ -308,7 +308,27 @@ def remove_friendship(u, f):
     return result
 
 
-    
 
-        
 
+def compressString(theString):
+    def getRepeats(aString,index,excludedCharacter):
+        currentIndex = index
+        retLen = 0
+        while (currentIndex < len(theString)-1 and aString[currentIndex+1]==aString[index] and aString[currentIndex]!=excludedCharacter):
+            retLen+=1
+            currentIndex+=1
+        return retLen
+    buildStr = ""
+    x = 0
+    while (x < len(theString)):
+            repeatLen = getRepeats(theString,x,"*")
+            if (repeatLen < 5):
+                buildStr += theString[x]
+                x+=1
+            else:
+                compressStr = "(" + theString[x] + str(repeatLen) + ")"
+                buildStr += compressStr
+                x += repeatLen+1
+    return buildStr
+
+print compressString("ssssssssssstufffffffffa isss theWorldoooooo")
