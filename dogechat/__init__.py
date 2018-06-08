@@ -100,7 +100,7 @@ def login():
         if auth.u_exists(user):
             if auth.login(user, pw):
                 global g_username 
-                g_username = user
+                g_username = str(user)
                 session['alert-type'] = 'success'
                 flash('Welcome to Dogechat %s!'%(user))
                 return redirect(url_for('index'))
