@@ -12,6 +12,7 @@ app = Flask(__name__)
 app.secret_key = os.urandom(32)
 
 app.jinja_env.globals.update(logged_in = auth.logged_in)
+g_username = ""
 
 DIR = os.path.dirname(__file__)
 
@@ -47,7 +48,7 @@ def profile(name):
     if auth.logged_in():
         if auth.u_exists(name):
             bio = "TESTBIO"
-            status = database.f_getstatus(session['username'], name)
+            status = database.f_getstatus(g_username, name)
             return render_template('profile.html', name=name, status=status, bio=bio)
         else:
             return render_template('noprofile.html')
@@ -63,7 +64,7 @@ def friendslist():
     if request.method == 'POST':
         return redirect(url_for('friendslist'))
     if auth.logged_in():
-        f_list = database.f_getlist(session['username'])
+        f_list = database.f_getlist(g_username)
         return render_template('friendslist.html', f_list=f_list)
     else:
         session['alert-type'] = 'error'
@@ -73,7 +74,7 @@ def friendslist():
 @app.route('/addfriend', methods=['GET', 'POST'])
 def addfriend():
     friend = request.args.get('name')
-    result = database.add_friendship(session['username'], friend)
+    result = database.add_friendship(g_username, friend)
     if result == True:
         session['alert-type'] = 'success'
         flash('You\'ve successfully added %s to your friends list'%(friend))
@@ -85,7 +86,7 @@ def addfriend():
 @app.route('/removefriend', methods=['GET','POST'])
 def removefriend():
     friend = request.args.get('name')
-    result = database.remove_friendship(session['username'], friend)
+    result = database.remove_friendship(g_username, friend)
     if result == True:
         session['alert-type'] = 'success'
         flash('You\'ve succcessfully removed %s from your friends list'%(friend))
@@ -102,6 +103,8 @@ def login():
 
         if auth.u_exists(user):
             if auth.login(user, pw):
+                global g_username 
+                g_username = str(user)
                 session['alert-type'] = 'success'
                 flash('Welcome to Dogechat %s!'%(user))
                 return redirect(url_for('index'))
@@ -137,7 +140,7 @@ def register():
 @app.route("/_receiveMessage", methods=["POST"])
 def receiveMessage():
     message = request.form['chatText']
-    name = session['username']
+    name = g_username
     if message.strip() != '':
         messages.append((name, message))
         database.add_global_message(name, message)
@@ -172,6 +175,8 @@ def logout():
     # Delete session cookie etc.
     if auth.logged_in():
         auth.logout()
+        global g_username 
+        g_username = ""
         session['alert-type'] = 'notice'
         flash('You have been logged out.')
     else:
@@ -184,11 +189,11 @@ def storePicData():
 	#print 'xd'
 	#print request.form['data']
 	#print request.form['targetUserArray']
-	print session['username']
+	print g_username
         print request.form['targetUserArray']
         userList = request.form['targetUserArray'].split(",")
         for receiver in userList:
-            database.add_picture(session['username'],receiver,request.form['data'],int(round(time_.time()*1000)))
+            database.add_picture(g_username,receiver,request.form['data'],int(round(time_.time()*1000)))
 	return "pics Processed"
 
 @app.route("/messenger", methods=['GET','POST'])
@@ -196,9 +201,9 @@ def messenger():
 	if request.method == 'POST':
         	return redirect(url_for('messenger'))
 	if auth.logged_in():
-		fList = database.f_getlist(session['username'])
+		fList = database.f_getlist(g_username)
 		print fList
-		return render_template("messenger.html", username=session['username'])
+		return render_template("messenger.html", username=g_username)
 	else:
         	session['alert-type'] = 'error'
         	flash('Please log in before checking your messages')
