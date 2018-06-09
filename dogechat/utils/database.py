@@ -27,7 +27,7 @@ def add_user(u, p):
         db.close()
         return True
     if check_pass(u) is None:
-        c.execute('INSERT INTO users VALUES("%s", "%s");' %(u, p))
+        c.execute('INSERT INTO users VALUES("%s", "%s", "I am a dog user");' %(u, p))
         db.commit()
         db.close()
         return True
