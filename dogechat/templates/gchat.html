@@ -9,6 +9,13 @@
             <div class="row">
                 <div class="col-lg-12 col-sm-12 col-12 profile-header"></div>
             </div>
+            <a class="btn btn-primary" data-toggle="collapse" href="#collapseid" aria-expanded="false" aria-controls="collapseExample">
+                Statistics
+            </a>
+            <div class="collapse" id="collapseid">
+                <h2>Messages sent by user</h2>
+                <div class="chart" id ="remove"></div>
+            </div>
             <div class="panel-footer">
                     <div class="input-group">
                 <textarea class="form-control" rows="1" id="chatText" name="chatText" placeholder="Type a message"></textarea>
@@ -37,46 +44,7 @@
             </div>
 {% endblock %}
 {% block jscripts %}
-<script>
-var interval = 1000; //1 secondSS
-function sendMessage() {
-    $.ajax({
-        url: "{{ url_for('receiveMessage') }}", 
-        type: "POST", 
-        data: {
-        'chatText': $("#chatText").val(),
-        'username': $("#username").val()
-        },
-        success: function() {
-            recvMessage(),
-            $("#chatText").val('');
-        }
-    });
-}
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src = "../static/js/gchat.js"></script>
 
-function recvMessage() {
-    $.ajax({
-        url: "{{ url_for('sendMessagesList') }}",
-        type: "GET",
-        success: function(result) {
-            $("#panelBody").html(result);            
-        },
-        complete: function(result) {
-            setTimeout(recvMessage, interval);
-        }
-    });
-}
-
-$(document).ready(function() {
-    $("#chatText").keypress(function(e) {
-        if (e.keyCode == 13) {
-            $("#send").click();
-        }
-    });
-    $("button").click(sendMessage);
-    recvMessage()
-    setTimeout(recvMessage, interval);
-});
-
-</script>
 {% endblock %}

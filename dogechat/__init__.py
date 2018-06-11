@@ -1,8 +1,10 @@
 from flask import Flask, url_for, redirect, session, request, render_template, render_template_string, flash
 from utils import auth,database
+from collections import Counter
 import sqlite3
 import time as time_
 import binascii
+import json
 import os
 
 app = Flask(__name__)
@@ -15,6 +17,8 @@ g_username = ""
 DIR = os.path.dirname(__file__)
 
 messages = database.get_global_message()
+
+
 
 # Index page
 @app.route('/', methods=['GET', 'POST'])
@@ -156,6 +160,16 @@ def getHtml():
                     {% endif %}
                 {% endfor %}'''
     return render_template_string(text, messages=messages)
+
+@app.route("/getdata", methods=["GET"])
+def getdata():
+    countmessages = []
+    for x in messages:
+        countmessages.append(x[0])
+    countmessages = dict(Counter(countmessages))
+    print "yeet"
+    return json.dumps(countmessages)
+
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     # Delete session cookie etc.
