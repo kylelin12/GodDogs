@@ -127,6 +127,33 @@ var sendPicData = function () {
 	});
 };
 
+//https://ourcodeworld.com/articles/read/380/how-to-convert-a-binary-string-into-a-readable-string-and-vice-versa-with-javascript
+var binToStr = function(str){
+	str = str.replace(/\s+/g,'');
+	str = str.match(/.{1,8}/g).join(" ");
+	var newBinary = str.split(" ");
+	var binaryCode = [];
+	for (i=0;i < newBinary.length;i++){
+		binaryCode.push(String.fromCharCode(parseInt(newBinary[i],2)));
+	}
+	return binaryCode.join("");
+};
+
+var blobDat;
+
+var recievePicData = function(){
+	$.ajax({
+		url:"/retrievePicData",
+		method:"GET",
+		success: function(data){
+			console.log(data);
+			blobDat = data;
+			console.log(window.btoa(data));
+		}
+	});
+};
+
+
 var composeUserDict = function(){
 	checkboxList = document.getElementById("checkListOfUsers");
 	arr = [];

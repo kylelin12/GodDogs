@@ -3,7 +3,7 @@ from utils import auth,database
 from collections import Counter
 import sqlite3
 import time as time_
-import binascii
+import binascii,base64
 import json
 import os
 
@@ -198,7 +198,8 @@ def storePicData():
 
 @app.route("/retrievePicData",methods=['GET'])
 def retrievePicData():
-        return binascii.a2b_base64('weAreTheChampion')
+	print binascii.a2b_base64(b'weAreTheChampion')
+        return binascii.a2b_base64(b'weAreTheChampion')
 
 @app.route("/messenger", methods=['GET','POST'])
 def messenger():
@@ -215,4 +216,4 @@ def messenger():
 
 if __name__ == '__main__':
     app.debug = False
-    app.run()
+    app.run(port=7777)
