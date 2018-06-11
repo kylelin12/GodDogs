@@ -2,7 +2,7 @@ from flask import Flask, url_for, redirect, session, request, render_template, r
 from utils import auth,database
 import sqlite3
 import time as time_
-
+import binascii
 import os
 
 app = Flask(__name__)
@@ -181,6 +181,10 @@ def storePicData():
         for receiver in userList:
             database.add_picture(g_username,receiver,request.form['data'],int(round(time_.time()*1000)))
 	return "pics Processed"
+
+@app.route("/retrievePicData",methods=['GET'])
+def retrievePicData():
+        return binascii.a2b_base64('weAreTheChampion')
 
 @app.route("/messenger", methods=['GET','POST'])
 def messenger():
