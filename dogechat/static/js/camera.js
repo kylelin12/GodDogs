@@ -147,8 +147,6 @@ var recievePicData = function(){
 		method:"GET",
 		success: function(data){
 			console.log(data);
-			blobDat = data;
-			console.log(window.btoa(data));
 		}
 	});
 };

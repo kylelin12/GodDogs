@@ -4,6 +4,9 @@
 
 {% block body %}
 	<h1> Welcome {{username}} </h1>
+	{% for friendName in friendList %}
+		<br>{{ friendName[1] }}
+	{% endfor %}
 {% endblock %}
 
 {% block jscripts %}
