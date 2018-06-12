@@ -342,8 +342,3 @@ def compressString(theString):
                 buildStr += compressStr
                 x += repeatLen+1
     return buildStr
-<<<<<<< HEAD
-
-
-=======
->>>>>>> f4eb2cefe8cc1cbe60796c8c2d62eb6f30b03e66
