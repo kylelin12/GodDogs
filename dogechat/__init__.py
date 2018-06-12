@@ -223,8 +223,15 @@ def messenger():
 	if auth.logged_in():
 		fList = database.f_getlist(g_username)
                 print fList
-
-		return render_template("messenger.html", username=g_username,friendList=fList)
+                pList=[]
+                for userName in fList:
+                        pList.append(database.get_picture(userName[1],g_username))
+                fpDict = {}
+                for x in range(len(pList)):
+                    fpDict[fList[x]]=pList[x]
+                #print "SPAMMMMM"
+                #print fpDict
+		return render_template("messenger.html", username=g_username,friendPicDict=fpDict)
 	else:
         	session['alert-type'] = 'error'
         	flash('Please log in before checking your messages')
