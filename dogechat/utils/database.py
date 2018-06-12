@@ -331,4 +331,4 @@ def compressString(theString):
                 x += repeatLen+1
     return buildStr
 
-print compressString("ssssssssssstufffffffffa isss theWorldoooooo")
+
