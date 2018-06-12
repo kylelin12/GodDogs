@@ -23,6 +23,14 @@ messages = database.get_global_message()
 # Index page
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    if auth.logged_in():
+        fList = database.f_getlist(g_username)
+        print fList
+        return render_template("index.html", friendList=fList)
+    else:
+        session['alert-type'] = 'error'
+        flash('Please login')
+        return redirect(url_for('login'))   
     if request.method == 'POST':
         return redirect(url_for('index'))
     return render_template('index.html')
@@ -198,7 +206,6 @@ def storePicData():
 
 @app.route("/retrievePicData",methods=['GET'])
 def retrievePicData():
-	print binascii.a2b_base64(b'weAreTheChampion')
         return binascii.a2b_base64(b'weAreTheChampion')
 
 @app.route("/messenger", methods=['GET','POST'])
@@ -207,8 +214,9 @@ def messenger():
         	return redirect(url_for('messenger'))
 	if auth.logged_in():
 		fList = database.f_getlist(g_username)
-		print fList
-		return render_template("messenger.html", username=g_username)
+                print fList
+
+		return render_template("messenger.html", username=g_username,friendList=fList)
 	else:
         	session['alert-type'] = 'error'
         	flash('Please log in before checking your messages')
