@@ -164,6 +164,9 @@ var composeUserDict = function(){
 	return arr;
 };
 
+var sendButton = document.getElementById("sendToFriends");
+sendButton.addEventListener("click",sendPicData);
+
 
 
 
