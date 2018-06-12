@@ -1,96 +1,90 @@
 $(document).ready(function () {
-	// Grab elements, create settings, etc.
+	// Variables
+	let width = 720,
+		height = 0,
+		filter = 'none',
+		streaming = false;
+	
+	// Video element
 	var video = document.getElementById('video');
+	// Canvas element
+	var canvas = document.getElementById('canvas');
+	// Duplicate canvas element
+	var canvas2 = document.getElementById('canvas2');
+	// Snap photo button
+	var snapB = document.getElementById('snap');
+	// Filters
+	var filters = document.getElementById('filters');
+	// Photo reel
+	var photos = document.getElementById('photos')
+	// Save photo button
+	var saveB = document.getElementById('saveB');
 
-	// Get access to the camera!
-	var startCam = function () {
-		if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-			// Not adding `{ audio: true }` since we only want video now
-			navigator.mediaDevices.getUserMedia({
-				video: true
-			}).then(function (stream) {
-				video.srcObject = stream
-				video.play();
-			});
+	// Camera start
+	navigator.mediaDevices.getUserMedia({video: true, audio: false})
+	.then(function(stream) {
+		// Source link for video
+		video.srcObject = stream;
+		// Play
+		video.play();
+	})
+	.catch(function(error) {
+		console.log(`VIDEO STREAM ERROR: ${error}`)
+	});
+
+	video.addEventListener('canplay', function(e) {
+		if (!streaming) {
+			// Set dimensions
+			height = video.videoHeight / (video.videoWidth / width);
+
+			video.setAttribute('width', width);
+			video.setAttribute('height', height)
+			canvas.setAttribute('width', width);
+			canvas.setAttribute('height', height);
+			canvas2.setAttribute('width', width);
+			canvas2.setAttribute('height', height);
+
+			streaming = true;
+		}
+	}, false);
+
+	snapB.addEventListener('click', function(e) {
+		takePhoto();
+
+		e.preventDefault();
+	}, false);
+
+	var takePhoto = function() {
+		const context = canvas.getContext('2d');
+		if (width && height) {
+			// Set canvas properties
+			canvas.width = width;
+			canvas.height = height;
+
+			// Draw the video onto the canvas after applying the filter
+			context.filter = filter;
+			context.drawImage(video, 0, 0, width, height);
+
+			// Canvas to image
+			const imgUrl = canvas.toDataURL('image/png');
+
+			// Create img element
+			const img = document.createElement('img');
+
+			// Set img source
+			img.setAttribute('src', imgUrl);
+
+			// Append to photos
+			photos.appendChild(img);
 		}
 	};
 
-	startCam();
+	filters.addEventListener('change', function(e) {
+		filter = e.target.value;
+		video.style.filter = filter;
 
-	$("#canvas").addClass("hidden");
-	$("#canvas-cpy").addClass("hidden");
-	$("#filterB").prop("disabled", true);
-	$("#resetFB").prop("disabled", true);
-	$("#snapAgain").prop("disabled", true);
-	$("#saveB").prop("disabled", true);
-
-	// Function to snap
-	var snap = function () {
-		$("#canvas").removeClass("hidden");
-		$("#video").addClass("hidden");
-		$("#canvas")[0].getContext('2d').drawImage(video, 0, 0, 640, 480);
-		resetFilter();
-		$(this).prop("disabled", true);
-		$("#snapAgain").prop("disabled", false);
-		$("#filterB").prop("disabled", false);
-		$("#saveB").prop("disabled", false);
-	};
-
-	// Trigger photo take
-	$("#snap").click(snap);
-
-	var filters = {
-		0: 'brightness(2.0)',
-		1: "blur(5px)",
-		2: "contrast(200%)",
-		3: "grayscale(100%)",
-		4: "hue-rotate(90deg)",
-		5: "drop-shadow(16px 16px 20px red) invert(75%)",
-		6: ""
-	};
-	filterCounter = 0;
-
-	var filterCounterUp = function () {
-		if (filterCounter == 6) filterCounter = 0;
-		else filterCounter = filterCounter + 1;
-	};
-
-	var resetFilter = function () {
-		$('#canvas-cpy')[0].getContext('2d').drawImage(document.getElementById("canvas"), 0, 0);
-		$('#canvas-cpy').css('filter', '');
-	};
-
-	var filterReset = function () {
-		resetFilter();
-		$("#resetFB").prop("disabled", true);
-	};
-
-	var filter = function () {
-		console.log(filterCounter);
-		$('#canvas-cpy').removeClass('hidden');
-		$("#resetFB").prop("disabled", false);
-		resetFilter();
-		$('#canvas').addClass('hidden');
-		$('#canvas-cpy').css('filter', filters[filterCounter]);
-		filterCounterUp();
-	};
-
-	$("#resetFB").click(filterReset);
-	$("#filterB").click(filter);
-
-	// Take another photo
-
-	var snapAnother = function () {
-		$("#snap").prop("disabled", false);
-		$("#filterB").prop("disabled", true);
-		$("#saveB").prop("disabled", true);
-		$(this).prop("disabled", true);
-		$("#video").removeClass("hidden");
-		$("#canvas").addClass("hidden");
-		$('#canvas-cpy').addClass('hidden');
-	};
-
-	$("#snapAgain").click(snapAnother);
+		e.preventDefault();
+	});
 
 	var convertCanvasToBase64 = function () {
 		var image = new Image();

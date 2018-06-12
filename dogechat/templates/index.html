@@ -8,18 +8,29 @@
     <div class="col-lg-12 text-center">
       <div class="row d-flex">
         <div style="margin: 0 auto; left: 50%">
-          <video id="video" width="640" height="480" autoplay></video>
-          <canvas id="canvas" width="640" height="480"></canvas>
-          <canvas id="canvas-cpy" width="640" height="480"></canvas>
+          <video id="video"></video>
+          <canvas id="canvas" style="display: none"></canvas>
+          <canvas id="canvas2" style="display: none"></canvas>
         </div>
       </div>
       <div class="row d-flex">
         <div class="btn-group-lg" role="group" style="left: 50%; text-align:center; margin: 0 auto;" aria-label="Camera Buttons">
           <button id="snap" class="btn btn-success btn-sm">Snap Photo</button>
-          <button id="filterB" class="btn btn-info btn-sm">FILTER</button>
-          <button id="resetFB" class="btn btn-info btn-sm">Reset Filter</button>
+          <select id="filters">
+            <option value="none">Normal</option>
+            <option value="grayscale(100%)">Grayscale</option>
+            <option value="sepia(100%)">Sepia</option>
+            <option value="invert(100%)">Invert</option>
+            <option value="hue-rotate(90deg)">Hue Shift 1</option>
+            <option value="hue-rotate(270deg)">Hue Shift 2</option>
+            <option value="blue(2px)">Mild Blur</option>
+            <option value="blur(10px)">Mid Range Blur</option>
+            <option value="blur(25px)">Super Blur</option>
+            <option value="contrast(50%)">Mild Contrast</option>
+            <option value="contrast(100%)">Mid Range Contrast</option>
+            <option value="contrast(300%)">Super Contrast</option>
+          </select>
           <button id="saveB" class="btn btn-primary btn-sm">Save Photo</button>
-          <button id="snapAgain" class="btn btn-secondary btn-sm">Take Another</button>
         </div>
       </div>
       <form id="checkListOfUsers">
@@ -39,6 +50,11 @@
 	</div>
 	<button id="sendToFriends" class="btn btn-primary mb-1" type="button">Send picture</button>
       </form>
+    </div>
+  </div>
+  <div>
+    <div id="photos">
+
     </div>
   </div>
 </div>
