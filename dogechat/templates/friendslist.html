@@ -31,9 +31,8 @@
                                 {% else %}
                                 <tr>
                                     <td> 
-                                        <!--Name of friend
-                                            NEEDS TO BE MODIFIED LATER TO ADD PROFILE LINK-->
-                                        {% if row[0] == session['username'] %}
+                                        <!--Name of friend-->
+                                        {% if row[0] == g_username %}
                                         <a class="nav-link" href="{{url_for('profile', name=row[1])}}">{{row[1]}}</a>
                                         {% else %}
                                         <a class="nav-link" href="{{url_for('profile', name=row[0])}}">{{row[0]}}</a>

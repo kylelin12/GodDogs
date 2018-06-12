@@ -12,6 +12,7 @@ app = Flask(__name__)
 app.secret_key = os.urandom(32)
 
 app.jinja_env.globals.update(logged_in = auth.logged_in)
+app.jinja_env.globals.update(g_username = "")
 g_username = ""
 
 DIR = os.path.dirname(__file__)
@@ -83,13 +84,17 @@ def friendslist():
 @app.route('/addfriend', methods=['GET', 'POST'])
 def addfriend():
     friend = request.args.get('name')
-    result = database.add_friendship(g_username, friend)
-    if result == True:
-        session['alert-type'] = 'success'
-        flash('You\'ve successfully added %s to your friends list'%(friend))
-    else:
+    if friend == g_username:
         session['alert-type'] = 'error'
-        flash('An error occured when trying to add %s to your friends list'%(friend))
+        flash('YOU CANNOT ADD YOURSELF AS A FRIEND!')
+    else:
+        result = database.add_friendship(g_username, friend)
+        if result == True:
+            session['alert-type'] = 'success'
+            flash('You\'ve successfully added %s to your friends list'%(friend))
+        else:
+            session['alert-type'] = 'error'
+            flash('An error occured when trying to add %s to your friends list'%(friend))
     return redirect(url_for('friendslist'))
 
 @app.route('/removefriend', methods=['GET','POST'])
@@ -114,6 +119,7 @@ def login():
             if auth.login(user, pw):
                 global g_username 
                 g_username = str(user)
+                app.jinja_env.globals.update(g_username = user)
                 session['alert-type'] = 'success'
                 flash('Welcome to Dogechat %s!'%(user))
                 return redirect(url_for('index'))
@@ -186,6 +192,7 @@ def logout():
         auth.logout()
         global g_username 
         g_username = ""
+        app.jinja_env.globals.update(g_username = "")
         session['alert-type'] = 'notice'
         flash('You have been logged out.')
     else:
