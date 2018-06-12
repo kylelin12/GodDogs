@@ -105,7 +105,7 @@ $(document).ready(function () {
 
 var convertCanvasToBase64 = function () {
 	var image = new Image();
-	image.src = document.getElementById("canvas-cpy").toDataURL("image/jpeg");
+	image.src = document.getElementById("canvas").toDataURL("image/jpeg");
 	return image.src
 };
 
