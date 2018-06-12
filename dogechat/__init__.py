@@ -44,6 +44,7 @@ def gchat():
 @app.route('/profile/<name>', methods=['GET', 'POST'])
 def profile(name):
     if request.method == 'POST':
+        name = request.form['search-name']
         return redirect(url_for('profile', name=name))
     if auth.logged_in():
         if auth.u_exists(name):
