@@ -31,22 +31,21 @@
                                 {% else %}
                                 <tr>
                                     <td> 
-                                        <!--Name of friend
-                                            NEEDS TO BE MODIFIED LATER TO ADD PROFILE LINK-->
-                                        {% if row[0] == session['username'] %}
-                                        {{row[1]}}
+                                        <!--Name of friend-->
+                                        {% if row[0] == g_username %}
+                                        <a class="nav-link" href="{{url_for('profile', name=row[1])}}">{{row[1]}}</a>
                                         {% else %}
-                                        {{row[0]}}
+                                        <a class="nav-link" href="{{url_for('profile', name=row[0])}}">{{row[0]}}</a>
                                         {% endif %}
                                     </td>
                                     <td> <!--Different button depending on status of friendship-->
                                         {% if row[0] == g_username %} <!--If user is in user1-->
-                                            {% if row[3] == 3 %} <!--Mutual Friends-->
+                                            {% if (row[2]|int) == 3 %} <!--Mutual Friends-->
                                             <a href="{{url_for('removefriend', name=row[1])}}" class="btn btn-mutualf">
                                                 <i class="fab fa-gratipay"></i>
                                                 Mutual Friend
                                             </a>
-                                            {% elif row[3] == 1 %} <!--Friends-->
+                                            {% elif (row[2]|int) == 1 %} <!--Friends-->
                                             <a href="{{url_for('removefriend', name=row[1])}}" class="btn btn-addedf">
                                                 <i class="fas fa-spinner fa-pulse"></i>
                                                 Friends
@@ -58,12 +57,12 @@
                                             </a>
                                             {% endif %}
                                         {% else %} <!--If friend is in user1-->
-                                            {% if row[3] == 3 %} <!--Mutual Friends-->
+                                            {% if (row[2]|int) == 3 %} <!--Mutual Friends-->
                                             <a href="{{url_for('removefriend', name=row[0])}}" class="btn btn-mutualf">
                                                 <i class="fab fa-gratipay"></i>
                                                 Mutual Friend
                                             </a>
-                                            {% elif row[3] == 2 %} <!--Friends-->
+                                            {% elif (row[2]|int) == 2 %} <!--Friends-->
                                             <a href="{{url_for('removefriend', name=row[0])}}" class="btn btn-addedf">
                                                 <i class="fas fa-spinner fa-pulse"></i>
                                                 Friends

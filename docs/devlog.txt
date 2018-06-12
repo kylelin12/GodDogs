@@ -76,3 +76,9 @@ PROFILE PAGES\!\!\!\! VERY WIP
 linKyle -- 2018-06-06 13:38:53
 GodDogs -> dogechat renames
 
+linKyle -- 2018-06-12 13:27:45
+Profile search + friendslist fix
+
+linKyle -- 2018-06-12 13:38:46
+Finally 'finished' friendslist
+

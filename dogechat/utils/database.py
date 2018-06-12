@@ -162,10 +162,10 @@ def f_listcheck(u1, u2):
     c = db.cursor()
     c.execute('SELECT * FROM friendslist WHERE user1="%s" AND user2="%s";'%(u1, u2))
     results = c.fetchall()
-    if results == []: # If user1 - user2 entry doesn't exist
+    if not results: # If user1 - user2 entry doesn't exist
         c.execute('SELECT * FROM friendslist WHERE user1="%s" AND user2="%s";' %(u2, u1))
         results = c.fetchall()
-        if results == []: # If user2 - user1 entry doesn't exist
+        if not results: # If user2 - user1 entry doesn't exist
             db.close()
             return 0
         else: # Else user2 - user1 entry exists
@@ -184,12 +184,14 @@ def f_getstatus(u1, u2):
     db = sqlite3.connect(db_file)
     c = db.cursor()
     list_status = f_listcheck(u1, u2)
+    print "LIST STATUS: %s"%(list_status)
     if list_status == 0: # If the entry doesn't exist
         return 0
     else:
         c.execute('SELECT status FROM friendslist WHERE user1="%s" and user2="%s";'%(u1, u2))
         results = c.fetchall()
         cur_status = results[0]
+        print "get_status CURRENT STATUS: %s"%(cur_status)
         if list_status == 1: # If user1 is in the user1 column
             if cur_status == 1: # If user1 has added user2 then display friends
                 return 1
@@ -222,7 +224,10 @@ def f_dbupdate(action, list_status, u1, u2):
         else: # Otherwise the entry exists
             c.execute('SELECT status FROM friendslist WHERE user1="%s" AND user2="%s";'%(u1, u2))
             results = c.fetchall()
-            cur_status = results[0]
+            print results[0][0]
+            cur_status = int(results[0][0])
+            print "dbupdate add LIST STATUS: %s"%(list_status)
+            print "dbupdate add CURRENT STATUS: %s"%(cur_status)
             if list_status == 1: # If the user adding is in the user1 column
                 if cur_status == 2: # If the other person has already added this user as a friend
                     c.execute('UPDATE friendslist SET status=3 WHERE user1="%s" AND user2="%s";'%(u1, u2))
@@ -252,7 +257,7 @@ def f_dbupdate(action, list_status, u1, u2):
     else: # Otherwise action is remove friend
         c.execute('SELECT status FROM friendslist WHERE user1="%s" AND user2="%s";'%(u1, u2))
         results = c.fetchall()
-        cur_status = results[0]
+        cur_status = int(results[0][0])
         if list_status == 1: # If the user removing is in user1
             if cur_status == 1: # If user has added the friend but was not added back
                 c.execute('UPDATE friendslist SET status=0 WHERE user1="%s" AND user2="%s";'%(u1, u2))
@@ -286,24 +291,31 @@ def f_dbupdate(action, list_status, u1, u2):
 # Adds the friendship / updates the friendship status
 # u-user, f-friend to add
 def add_friendship(u, f):
+    print "addf USER: %s FRIEND: %s"%(u, f)
     list_status = f_listcheck(u, f)
+    print "addf LIST STATUS: %s"%(list_status)
     if list_status == 0 or list_status == 1: # If neither party has initiated a friendship or the user adding is in the user1 column
         result = f_dbupdate(0, list_status, u, f)
     elif list_status == 2: # If the user adding is in the user2 column
         result = f_dbupdate(0, list_status, f, u)
     else: # Otherwise the user has already added the friend as a friend
+        print "Error: Already friends"
         return "Error: Already friends"
+    print result
     return result
 
 # Removes the friendship / updates the friendship status
 # u-user, f-friend to remove
 def remove_friendship(u, f):
+    print "remf USER: %s FRIEND: %s"%(u, f)
     list_status = f_listcheck(u, f)
+    print "remf LIST STATUS: %s"%(list_status)
     if list_status == 1: # If the user removing is in the user1 column
         result = f_dbupdate(1, list_status, u, f)
     elif list_status == 2: # If the user removing is in the user2 column
         result = f_dbupdate(1, list_status, f, u)
     else: # Otherwise the user has already unfriended that friend
+        print "Error: Not friends anyway"
         return "Error: Not friends anyway"
     return result
 
@@ -330,5 +342,8 @@ def compressString(theString):
                 buildStr += compressStr
                 x += repeatLen+1
     return buildStr
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> f4eb2cefe8cc1cbe60796c8c2d62eb6f30b03e66
