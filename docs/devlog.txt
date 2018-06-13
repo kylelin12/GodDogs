@@ -67,6 +67,9 @@ Added route for messenger
 linKyle -- 2018-06-01 10:59:27
 More friendslist foundation
 
+quangJ -- 2018-06-01 11:34:57
+Work on compressing data
+
 linKyle -- 2018-06-01 12:18:19
 PROFILE PAGEScd ../docs/cd ../docs/ VERY WIP
 
@@ -82,9 +85,19 @@ Profile search + friendslist fix
 linKyle -- 2018-06-12 13:38:46
 Finally 'finished' friendslist
 
+quangJ -- 2018-06-12 14:02:12
+list of friends on home page isn't bugged anymore
+
 linKyle -- 2018-06-12 14:31:51
 FILTERED PHOTOS
 
 linKyle -- 2018-06-12 21:12:39
 Settings page
+
+quangJ -- 2018-06-12 23:15:19
+Getting other people's pictures works now
+
+quangJ -- 2018-06-13 00:12:55
+Quality of life improvements, removal of depracated features
+
 
