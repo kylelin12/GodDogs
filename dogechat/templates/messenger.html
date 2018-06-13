@@ -4,13 +4,13 @@
 
 {% block body %}
 	<h1> Welcome {{username}} </h1>
-	{{friendPicDict}}
 	{% for friendName in friendPicDict %}
 		<br><h3>Messages from {{ friendName[0]}} </h3>
 		{% if friendPicDict[friendName] is not none %}
 			{% for entry in friendPicDict[friendName] %}
 				<br><img src="{{entry[2]}}">
 			{% endfor %}
+		{% else %} <br> No messages. Find some friends that send photos
 		{% endif %}
 	{% endfor %}
 {% endblock %}
