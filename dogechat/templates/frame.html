@@ -45,7 +45,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('messenger')}}">Messenger
+                    <a class="nav-link" href="{{url_for('messenger')}}">View Picture Messages
                     </a>
                 </li>
                 <li class="nav-item">
@@ -60,7 +60,7 @@
                 <li class="nav-item">
                   <form class="navbar-form" method="POST" action="{{url_for('profile', name='search-name')}}">
                     <div class="form-group" style="margin-bottom: 0">
-                      <input type="text" class="form-control" name="search-name" placeholder="Search Profile - example search is bro@gmail.com">
+                      <input type="text" class="form-control" name="search-name" placeholder="Search Profile - example: type in bro@gmail.com and hit enter">
                     </div>
                     <button type="submit" class="btn btn-default" style="display: none;">Submit</button>
                   </form>

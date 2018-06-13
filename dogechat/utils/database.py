@@ -106,6 +106,12 @@ def get_picture(s, r):
         db.close()
         return results
 
+def del_picture(r):
+    db = sqlite3.connect(db_file)
+    c = db.cursor()
+    c.execute('DELETE FROM pictures WHERE receiver="%s";' %(r))
+    db.commit()
+    db.close()
 # messages Database
 
 # Sender - Receiver - Message - Time

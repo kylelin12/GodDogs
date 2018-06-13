@@ -34,10 +34,18 @@
       </div>
       <form id="checkListOfUsers">
 	      {% for friendName in friendList %}
+	      {{friendList}}
+	      {% if friendName[1]==username %}
 		<div class="form-check">
 			<input class = "form-check-input" type="checkbox" value = "{{friendName[0]}}" id="{{friendName[0]}}">
-			<label class = "form-check-label" for="{{friendName[1]}}">{{friendName[0]}}</label>
+			<label class = "form-check-label" for="{{friendName[0]}}">{{friendName[0]}}</label>
 		</div>
+		{% else %}
+			<div class="form-check">
+				<input class = "form-check-input" type="checkbox" value="{{friendName[1]}}" id="{{friendName[1]}}">
+				<label class = "form-check-label" for="{{friendName[1]}}">{{friendName[1]}}</label>
+			</div>
+		{% endif %}
 	      {% endfor %}
 <!--
 	     <div class="form-check">

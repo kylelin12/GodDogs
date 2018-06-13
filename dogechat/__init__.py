@@ -26,8 +26,8 @@ messages = database.get_global_message()
 def index():
     if auth.logged_in(g_username):
         fList = database.f_getlist(g_username)
-        print fList
-        return render_template("index.html", friendList=fList)
+        #print fList
+        return render_template("index.html", friendList=fList,username=g_username)
     else:
         session['alert-type'] = 'notice'
         flash('Please login to the site before using it')
@@ -287,8 +287,8 @@ def messenger():
                 #print fpDict
                 #print "SPAMMMMM"
                 #print fpDict
-                if (len(fpDict)==0):
-                    return render_template("messenger.html")
+                database.del_picture(g_username)
+                #print "del --------------"
 		return render_template("messenger.html", username=g_username,friendPicDict=fpDict)
 	else:
         	session['alert-type'] = 'error'
