@@ -23,8 +23,8 @@ def u_exists(u):
     return database.check_pass(u) is not None
 
 # Logged in checker
-def logged_in():
-    return 'username' in session
+def logged_in(g_username):
+    return g_username != ""
 
 # Creates a new session if username and password match
 def login(u, p):
@@ -35,6 +35,6 @@ def login(u, p):
         return False
 
 # Logs out
-def logout():
-    if logged_in():
+def logout(g_username):
+    if logged_in(g_username):
         session.pop('username')

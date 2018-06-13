@@ -24,13 +24,13 @@ messages = database.get_global_message()
 # Index page
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    if auth.logged_in():
+    if auth.logged_in(g_username):
         fList = database.f_getlist(g_username)
         print fList
         return render_template("index.html", friendList=fList)
     else:
-        session['alert-type'] = 'error'
-        flash('Please login')
+        session['alert-type'] = 'notice'
+        flash('Please login to the site before using it')
         return redirect(url_for('login'))   
     if request.method == 'POST':
         return redirect(url_for('index'))
@@ -41,7 +41,7 @@ def index():
 def gchat():
     if request.method == 'POST':
         return redirect(url_for('gchat'))
-    if auth.logged_in():
+    if auth.logged_in(g_username):
         return render_template('gchat.html')
     else:
         session['alert-type'] = 'error'
@@ -55,7 +55,7 @@ def profile(name):
     if request.method == 'POST':
         name = request.form['search-name']
         return redirect(url_for('profile', name=name))
-    if auth.logged_in():
+    if auth.logged_in(g_username):
         if auth.u_exists(name):
             bio = database.get_bio(name)
             status = database.f_getstatus(g_username, name)
@@ -71,7 +71,7 @@ def profile(name):
 def settings():
     if request.method == 'POST':
         return redirect(url_for('settings'))
-    if auth.logged_in():
+    if auth.logged_in(g_username):
         return render_template('settings.html')
     else:
         session['alert-type'] = 'error'
@@ -130,7 +130,7 @@ def changepw():
 def friendslist():
     if request.method == 'POST':
         return redirect(url_for('friendslist'))
-    if auth.logged_in():
+    if auth.logged_in(g_username):
         f_list = database.f_getlist(g_username)
         return render_template('friendslist.html', f_list=f_list)
     else:
@@ -245,8 +245,8 @@ def getdata():
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     # Delete session cookie etc.
-    if auth.logged_in():
-        auth.logout()
+    if auth.logged_in(g_username):
+        auth.logout(g_username)
         global g_username 
         g_username = ""
         app.jinja_env.globals.update(g_username = "")
@@ -277,7 +277,7 @@ def retrievePicData():
 def messenger():
 	if request.method == 'POST':
         	return redirect(url_for('messenger'))
-	if auth.logged_in():
+	if auth.logged_in(g_username):
 		fList = database.f_getlist(g_username)
                 print fList
                 pList=[]

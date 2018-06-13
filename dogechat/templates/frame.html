@@ -39,7 +39,7 @@
               </a>
             </li>
             {% block showlog %}
-                {% if logged_in() %}
+                {% if logged_in(g_username) %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{url_for('gchat')}}">GChat
                     </a>
