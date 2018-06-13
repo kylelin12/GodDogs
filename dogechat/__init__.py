@@ -291,7 +291,7 @@ def messenger():
                 #print fpDict
                 #print "SPAMMMMM"
                 #print fpDict
-                #database.del_picture(g_username)
+                database.del_picture(g_username)
                 #print "del --------------"
 		return render_template("messenger.html", username=g_username,friendPicDict=fpDict)
 	else:
