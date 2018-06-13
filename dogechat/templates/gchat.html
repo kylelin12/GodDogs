@@ -14,34 +14,34 @@
             </a>
             <div class="collapse" id="collapseid">
                 <h2>Messages sent by user</h2>
-                <div class="chart" id ="remove"></div>
+                <div class="chart" id="remove"></div>
             </div>
             <div class="panel-footer">
-                    <div class="input-group">
-                <textarea class="form-control" rows="1" id="chatText" name="chatText" placeholder="Type a message"></textarea>
+                <div class="input-group">
+                    <textarea class="form-control" rows="1" id="chatText" name="chatText" placeholder="Type a message"></textarea>
                 </div>
-            <span class="input-group-btn">
-            <button id="send" class="btn btn-primary">Send</button>
+                <span class="input-group-btn">
+                    <button id="send" class="btn btn-primary">Send</button>
                 </span>
             </div>
             <div class="panel panel-default">
-                                <div class="panel panel-default">
-                                    <div id="panelBody" class="panel-body">
-                                    </div>
-                                    </div>
-                                    <!--./panel-body-->
-                    
-                                </div>
-                                <!--panel-->
-                                
-                            </div>
-                    
+                <div class="panel panel-default">
+                    <div style="max-height: 720px; overflow: scroll; padding: 15px;">
+                        <div id="panelBody" class="panel-body">
                         </div>
-                        <!--row-->
-                    
                     </div>
+                    <!--./panel-body-->
+
                 </div>
+                <!--panel-->
+
             </div>
+
+        </div>
+        <!--row-->
+
+    </div>
+</div>
 {% endblock %}
 {% block jscripts %}
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
