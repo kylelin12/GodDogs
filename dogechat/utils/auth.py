@@ -37,4 +37,5 @@ def login(u, p):
 # Logs out
 def logout(g_username):
     if logged_in(g_username):
-        session.pop('username')
+        if session.get('username') is not None:
+            session.pop('username')
