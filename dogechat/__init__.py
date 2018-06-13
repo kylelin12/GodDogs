@@ -279,10 +279,10 @@ def messenger():
         	return redirect(url_for('messenger'))
 	if auth.logged_in(g_username):
 		fList = database.f_getlist(g_username)
-                print fList
+                #print fList
                 fpDict={}
                 for userName in fList:
-                        print (userName)
+                        #print (userName)
                         userIndex=0
                         if userName[0]==g_username:
                                 userIndex=1
