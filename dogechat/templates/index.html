@@ -34,7 +34,6 @@
       </div>
       <form id="checkListOfUsers">
 	      {% for friendName in friendList %}
-	      {{friendList}}
 	      {% if friendName[1]==username %}
 		<div class="form-check">
 			<input class = "form-check-input" type="checkbox" value = "{{friendName[0]}}" id="{{friendName[0]}}">
@@ -67,6 +66,9 @@
     </div>
   </div>
 </div>
+<center>
+<br>Have no friends? use the search bar at the top, type in a username, and press "enter" on your keyboard
+</center>
 {% endblock %}
 
 {% block jscripts %}
