@@ -9,8 +9,6 @@ $(document).ready(function () {
 	var video = document.getElementById('video');
 	// Canvas element
 	var canvas = document.getElementById('canvas');
-	// Duplicate canvas element
-	var canvas2 = document.getElementById('canvas2');
 	// Snap photo button
 	var snapB = document.getElementById('snap');
 	// Filters
@@ -41,8 +39,6 @@ $(document).ready(function () {
 			video.setAttribute('height', height)
 			canvas.setAttribute('width', width);
 			canvas.setAttribute('height', height);
-			canvas2.setAttribute('width', width);
-			canvas2.setAttribute('height', height);
 
 			streaming = true;
 		}
@@ -50,7 +46,8 @@ $(document).ready(function () {
 
 	snapB.addEventListener('click', function(e) {
 		takePhoto();
-
+		// Changes download button
+		changeDLB();
 		e.preventDefault();
 	}, false);
 
@@ -66,17 +63,25 @@ $(document).ready(function () {
 			context.drawImage(video, 0, 0, width, height);
 
 			// Canvas to image
-			const imgUrl = canvas.toDataURL('image/png');
+			const imgUrl = canvas.toDataURL('image/jpeg');
 
 			// Create img element
 			const img = document.createElement('img');
 
 			// Set img source
 			img.setAttribute('src', imgUrl);
+			img.setAttribute('style', 'margin: auto; display: block;');
 
+			photos.innerHTML = "";
 			// Append to photos
 			photos.appendChild(img);
 		}
+	};
+
+	var changeDLB = function() {
+		const imgUrl = canvas.toDataURL('image/jpeg');
+		saveB.href = imgUrl;
+		saveB.download = 'image.jpeg';
 	};
 
 	filters.addEventListener('change', function(e) {
@@ -89,7 +94,7 @@ $(document).ready(function () {
 	var convertCanvasToBase64 = function () {
 		var image = new Image();
 		image.src = $('#canvas').toDataURL("image/jpeg");
-		return image.src
+		return image.src;
 	};
 
 	var sendPicData = function () {
