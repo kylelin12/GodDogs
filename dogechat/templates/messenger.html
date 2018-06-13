@@ -6,8 +6,13 @@
 	<h1> Welcome {{username}} </h1>
 	<br>
 	<h5>Note that messages are deleted after the first view</h5>
+	{{friendPicDict}}
 	{% for friendName in friendPicDict %}
-		<br><h3>Picture Messages from {{ friendName[0]}} </h3>
+		{% if friendName[0]==username %}
+			<br><h3>PictureMessages from {{ friendName[1]}}</h3>
+		{% else %}
+			<br><h3>Picture Messages from {{ friendName[0]}} </h3>
+		{% endif %}
 		{% if friendPicDict[friendName] is not none %}
 			{% for entry in friendPicDict[friendName] %}
 				<br><img src="{{entry[2]}}">

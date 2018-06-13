@@ -279,15 +279,19 @@ def messenger():
         	return redirect(url_for('messenger'))
 	if auth.logged_in(g_username):
 		fList = database.f_getlist(g_username)
-                #print fList
+                print fList
                 fpDict={}
                 for userName in fList:
-                        pictureString = database.get_picture(userName[1],g_username)
-                        fpDict[userName]=database.get_picture(userName[1],g_username)
+                        print (userName)
+                        userIndex=0
+                        if userName[0]==g_username:
+                                userIndex=1
+                        pictureString = database.get_picture(userName[userIndex],g_username)
+                        fpDict[userName]=pictureString
                 #print fpDict
                 #print "SPAMMMMM"
                 #print fpDict
-                database.del_picture(g_username)
+                #database.del_picture(g_username)
                 #print "del --------------"
 		return render_template("messenger.html", username=g_username,friendPicDict=fpDict)
 	else:
