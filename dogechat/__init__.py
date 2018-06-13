@@ -57,7 +57,7 @@ def profile(name):
         return redirect(url_for('profile', name=name))
     if auth.logged_in():
         if auth.u_exists(name):
-            bio = "TESTBIO"
+            bio = database.get_bio(name)
             status = database.f_getstatus(g_username, name)
             return render_template('profile.html', name=name, status=status, bio=bio)
         else:
@@ -66,6 +66,63 @@ def profile(name):
         session['alert-type'] = 'error'
         flash('Please log in before checking your profile')
         return redirect(url_for('login'))
+
+@app.route('/settings')
+def settings():
+    if request.method == 'POST':
+        return redirect(url_for('settings'))
+    if auth.logged_in():
+        return render_template('settings.html')
+    else:
+        session['alert-type'] = 'error'
+        flash('Please log in before changing your settings')
+        return redirect(url_for('login'))
+
+@app.route('/changebio', methods=['POST'])
+def changebio():
+    if request.method == 'POST':
+        newbio = request.form['new-bio']
+        pw = request.form['key']
+        if auth.pw_verify(g_username, pw):
+            result = database.change_bio(g_username, newbio)
+            if result:
+                session['alert-type'] = 'success'
+                flash('You\'ve successfully changed your bio.')
+            else:
+                session['alert-type'] = 'error'
+                flash('An error occured while trying to change your password')
+            return redirect(url_for('settings'))
+        else:
+            session['alert-type'] = 'error'
+            flash('The password you entered does not match our databases')
+            return redirect(url_for('settings'))
+
+@app.route('/changepw', methods=['POST'])
+def changepw():
+    if request.method == 'POST':
+        oldpw = request.form['old-key']
+        newpw = request.form['new-key']
+        newpwc = request.form['new-key-confirm']
+        if auth.pw_verify(g_username, oldpw):
+            if newpw == newpwc:
+                result = auth.update_pw(g_username, newpw)
+                if result:
+                    session['alert-type'] = 'success'
+                    flash('You\'ve successfully changed your password')
+                else:
+                    session['alert-type'] = 'error'
+                    flash('An error occured while trying to change your password')
+            else:
+                session['alert-type'] = 'error'
+                flash('Please double check to make sure your new passwords match')
+        else:
+            session['alert-type'] = 'error'
+            flash('Please make sure you enter your old password correctly')
+        return redirect(url_for('settings'))
+    else:
+        return redirect(url_for('settings'))
+
+
 
 # Shows your list of friends if logged in
 # If not logged in, redirect to login

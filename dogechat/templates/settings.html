@@ -1,0 +1,48 @@
+{% extends 'frame.html' %}
+
+{% block title %}{{g_username}}'s Settings{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="form-wrap change-bio">
+                <h1>Change your bio</h1>
+                <form role="form" autocomplete="off" method="POST" action="/changebio">
+                    <div class="form-group">
+                        <label for="email" class="sr-only">New Bio</label>
+                        <textarea type="text" name="new-bio" id="new-bio" class="form-control" style="height: 92px;"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="key" class="sr-only">Password</label>
+                        <input type="password" name="key" id="key" class="form-control" placeholder="Password">
+                    </div>
+                    <input type="submit" id="btn-login" class="btn btn-primary btn-lg btn-block" value="Change Bio">
+                </form>
+                <hr>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-wrap change-pass">
+                <h1>Change password</h1>
+                <form role="form" autocomplete="off" method="POST" action="/changepw">
+                        <div class="form-group">
+                            <label for="old-key" class="sr-only">Old Password</label>
+                            <input type="password" name="old-key" id="old-key" class="form-control" placeholder="Password">
+                        </div>
+                        <div class="form-group">
+                            <label for="new-key" class="sr-only">New Password</label>
+                            <input type="password" name="new-key" id="new-key" class="form-control" placeholder="New Password">
+                        </div>
+                        <div class="form-group">
+                            <label for="new-key-confirm" class="sr-only">New Password Confirmation</label>
+                            <input type="password" name="new-key-confirm" id="new-key-confirm" class="form-control" placeholder="New Password">
+                        </div>
+                    <input type="submit" id="btn-login" class="btn btn-primary btn-lg btn-block" value="Change Password">
+                </form>
+                <hr>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

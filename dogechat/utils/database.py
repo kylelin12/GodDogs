@@ -54,13 +54,33 @@ def check_pass(u):
         db.close()
     return results[0][0]
 
+def get_bio(u):
+    db = sqlite3.connect(db_file)
+    c = db.cursor()
+    c.execute('SELECT bio FROM users WHERE username="%s"'%(u))
+    results = c.fetchall()
+    if results == []:
+        db.close()
+        return None
+    else:
+        db.close()
+    return results[0][0]
+
 def change_pw(u, p):
     db = sqlite3.connect(db_file)
     c = db.cursor()
     c.execute('UPDATE users SET password="%s" WHERE username="%s";' %(p, u))
     db.commit()
     db.close()
-    return 
+    return True
+
+def change_bio(u, b):
+    db = sqlite3.connect(db_file)
+    c = db.cursor()
+    c.execute('UPDATE users SET bio="%s" WHERE username="%s"' %(b, u))
+    db.commit()
+    db.close()
+    return True
     
 # pictures Database
 

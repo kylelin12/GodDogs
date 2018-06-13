@@ -1,6 +1,6 @@
 {% extends 'frame.html' %}
 
-{% block title %}{{session['username']}}'s friends list{% endblock %}
+{% block title %}{{g_username}}'s friends list{% endblock %}
 
 {% block styles %}
 <link href="{{url_for('static', filename='css/friends.css')}}" rel="stylesheet">
